@@ -26,7 +26,10 @@ if (!category && post.id.includes("/")) {
 let rawImage = post.data.image || post.data.img;
 let image: string | undefined = undefined;
 if (rawImage) {
-  let cleaned = String(rawImage).replace(/["']/g, "").replace(/\\/g, "/").trim();
+  let cleaned = String(rawImage)
+    .replace(/["']/g, "")
+    .replace(/\\/g, "/")
+    .trim();
   if (cleaned.startsWith("Image/") || cleaned.startsWith("Images/")) {
     cleaned = "/" + cleaned;
   } else if (!cleaned.startsWith("/") && !cleaned.startsWith("http")) {
@@ -35,6 +38,7 @@ if (rawImage) {
   image = cleaned;
 }
 ---
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -49,13 +53,19 @@ if (rawImage) {
       <!-- Top Navigation -->
       <nav class="top-nav" aria-label="Main Navigation">
         <div class="top-nav__left">
-          <a href="/posts" class="top-nav__link-left" id="nav-posts-left">• Posts</a>
+          <a href="/posts" class="top-nav__link-left" id="nav-posts-left"
+            >• Posts</a
+          >
         </div>
         <div class="top-nav__right">
           <a href="/" class="top-nav__link-right" id="nav-home">Home</a>
           <a href="/work" class="top-nav__link-right" id="nav-work">Work</a>
           <a href="/posts" class="top-nav__link-right" id="nav-dp">DP</a>
-          <a href="/collections" class="top-nav__link-right" id="nav-collections">Collections</a>
+          <a
+            href="/collections"
+            class="top-nav__link-right"
+            id="nav-collections">Collections</a
+          >
         </div>
       </nav>
 
@@ -64,14 +74,16 @@ if (rawImage) {
         <article class="post-detail-card">
           <!-- Left Column: Image or Placeholder Visual -->
           <div class="post-detail-visual">
-            {image ? (
-              <img src={image} alt={title} class="post-detail-image" />
-            ) : (
-              <div class="visual-placeholder">
-                <span class="visual-placeholder__text">{category}</span>
-                <span class="visual-placeholder__subtext">{title}</span>
-              </div>
-            )}
+            {
+              image ? (
+                <img src={image} alt={title} class="post-detail-image" />
+              ) : (
+                <div class="visual-placeholder">
+                  <span class="visual-placeholder__text">{category}</span>
+                  <span class="visual-placeholder__subtext">{title}</span>
+                </div>
+              )
+            }
           </div>
 
           <!-- Right Column: Content -->
@@ -85,9 +97,7 @@ if (rawImage) {
             </div>
 
             <!-- Signature -->
-            <div class="post-detail-signature">
-              - Ashish Gajjar
-            </div>
+            <div class="post-detail-signature">- Ashish Gajjar</div>
           </div>
         </article>
       </div>
