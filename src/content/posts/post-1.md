@@ -1,11 +1,9 @@
 ---
-title: "Design & Exploration"
-category: "Graphic"
-image: "/123.jpg"
-aspectRatio: "3/4"
+image: /123.jpg
+aspectRatio: 3/4
 col: 1
-date: "2026-08-07"
-description: "A showcase of graphic design exploration."
+date: 2026-08-07
+description: A showcase of graphic design exploration.
 ---
 
 # Design & Exploration
