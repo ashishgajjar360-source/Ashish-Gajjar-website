@@ -8,6 +8,7 @@ const posts = defineCollection({
     category: z.string().optional(),
     tags: z.array(z.string()).optional(),
     image: z.string().optional(),
+    img: z.string().optional(),
     aspectRatio: z.union([z.string(), z.number()]).optional().default("3/4"),
     col: z.number().optional().default(1),
     date: z.union([z.string(), z.date()]).optional(),

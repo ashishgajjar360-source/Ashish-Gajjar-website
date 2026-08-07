@@ -23,12 +23,16 @@ if (!category && post.id.includes("/")) {
   category = post.id.split("/")[0];
 }
 
-let image = post.data.image;
-if (image) {
-  image = image.replace(/["']/g, "").replace(/\\/g, "/");
-  if (!image.startsWith("/") && !image.startsWith("http")) {
-    image = "/" + image;
+let rawImage = post.data.image || post.data.img;
+let image: string | undefined = undefined;
+if (rawImage) {
+  let cleaned = String(rawImage).replace(/["']/g, "").replace(/\\/g, "/").trim();
+  if (cleaned.startsWith("Image/") || cleaned.startsWith("Images/")) {
+    cleaned = "/" + cleaned;
+  } else if (!cleaned.startsWith("/") && !cleaned.startsWith("http")) {
+    cleaned = "/Images/" + cleaned;
   }
+  image = cleaned;
 }
 ---
 <html lang="en">

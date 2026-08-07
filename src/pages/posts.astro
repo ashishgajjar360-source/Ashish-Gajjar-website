@@ -34,12 +34,16 @@ const posts = obsidianPosts.map((entry, idx) => {
   const filename = entry.id.split("/").pop()?.replace(/\.md$/, "") || "";
   const title = entry.data.title || filename.replace(/[-_]/g, " ") || "Untitled";
 
-  let image = entry.data.image;
-  if (image) {
-    image = image.replace(/["']/g, "").replace(/\\/g, "/");
-    if (!image.startsWith("/") && !image.startsWith("http")) {
-      image = "/" + image;
+  let rawImage = entry.data.image || entry.data.img;
+  let image: string | undefined = undefined;
+  if (rawImage) {
+    let cleaned = String(rawImage).replace(/["']/g, "").replace(/\\/g, "/").trim();
+    if (cleaned.startsWith("Image/") || cleaned.startsWith("Images/")) {
+      cleaned = "/" + cleaned;
+    } else if (!cleaned.startsWith("/") && !cleaned.startsWith("http")) {
+      cleaned = "/Images/" + cleaned;
     }
+    image = cleaned;
   }
 
   return {
