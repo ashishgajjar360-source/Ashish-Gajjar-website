@@ -95,9 +95,9 @@ const digitalMediaFolders = [
         </div>
         <div class="work-scroller">
           {printMediaFolders.map((folder) => (
-            <a href="/specificwork" class="work-card work-card--vertical" aria-label={`View ${folder.name} in Print Media`}>
-              <span class="work-card__eyebrow">Print Media</span>
-              <p class="work-card__intro">
+            <a href="/specificwork" class="card card--vertical" aria-label={`View ${folder.name} in Print Media`}>
+              <h4 class="frame__nav">Print Media</h4>
+              <p class="card__intro">
                 {folder.intro.map((line, idx) => (
                   <>
                     {line}
@@ -105,8 +105,8 @@ const digitalMediaFolders = [
                   </>
                 ))}
               </p>
-              <h3 class="work-card__title">{folder.name}</h3>
-              <p class="work-card__tagline">{folder.tagline}</p>
+              <p class="card__title">{folder.name}</p>
+              <p class="card__tagline">{folder.tagline}</p>
             </a>
           ))}
         </div>
@@ -120,9 +120,9 @@ const digitalMediaFolders = [
         </div>
         <div class="work-scroller">
           {digitalMediaFolders.map((folder) => (
-            <a href="/specificwork" class="work-card work-card--horizontal" aria-label={`View ${folder.name} in Digital Media`}>
-              <span class="work-card__eyebrow">Digital Media</span>
-              <p class="work-card__intro">
+            <a href="/specificwork" class="card card--horizontal" aria-label={`View ${folder.name} in Digital Media`}>
+              <h4 class="frame__nav">Digital Media</h4>
+              <p class="card__intro">
                 {folder.intro.map((line, idx) => (
                   <>
                     {line}
@@ -130,8 +130,8 @@ const digitalMediaFolders = [
                   </>
                 ))}
               </p>
-              <h3 class="work-card__title">{folder.name}</h3>
-              <p class="work-card__tagline">{folder.tagline}</p>
+              <p class="card__title">{folder.name}</p>
+              <p class="card__tagline">{folder.tagline}</p>
             </a>
           ))}
         </div>

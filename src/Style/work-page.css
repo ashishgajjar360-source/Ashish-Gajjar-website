@@ -24,7 +24,7 @@ body {
 }
 
 .work-page {
-  max-width: 1350px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2.5rem 2rem 4rem 2rem;
   display: flex;
@@ -120,78 +120,98 @@ body {
   display: none;
 }
 
-/* ── Base Home-Style Card ── */
-.work-card {
+/* ── Home-Style Card Component ── */
+.card {
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   flex: none;
-  background-color: #ffffff;
   border-radius: 1.5rem;
-  padding: 2.25rem;
-  box-sizing: border-box;
+  background-color: #ffffff;
   box-shadow:
-    0 4px 30px rgba(0, 0, 0, 0.04),
+    0 0px 36px rgba(0, 0, 0, 0.08),
     0 0 0 1px rgba(0, 0, 0, 0.06);
   text-decoration: none;
   color: inherit;
-  scroll-snap-align: start;
-  transition: transform 260ms cubic-bezier(0.2, 0, 0, 1), box-shadow 260ms ease;
   overflow: hidden;
+  transition: transform 260ms cubic-bezier(0.2, 0, 0, 1), box-shadow 260ms ease;
+  scroll-snap-align: start;
 }
 
-.work-card:hover {
+.card:hover {
   transform: translateY(-6px) scale(1.015);
   box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.08),
+    0 16px 40px rgba(0, 0, 0, 0.12),
     0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
-.work-card__eyebrow {
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #666666;
-  margin: 0;
+/* Vertical Cards for Print Media */
+.card--vertical {
+  width: min(80vw, 22rem);
+  aspect-ratio: 3 / 4;
 }
 
-.work-card__title {
-  font-size: clamp(2.25rem, 4vw, 3.5rem);
+/* Horizontal Cards for Digital Media */
+.card--horizontal {
+  width: min(85vw, 34rem);
+  aspect-ratio: 4 / 3;
+}
+
+.card .frame__nav {
+  position: absolute;
+  top: 8%;
+  left: 10%;
+  transform: none;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #666666;
+}
+
+.card .card__intro {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  transform: none;
+  width: 80%;
+  margin: 0;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #333333;
+}
+
+.card .card__title {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  width: 90%;
+  text-align: center;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
   line-height: 0.9;
   font-weight: 700;
   letter-spacing: -0.05em;
   color: transparent;
   -webkit-text-stroke: 1.5px #111111;
-  margin: auto 0;
+  white-space: normal;
   word-break: break-word;
 }
 
-.work-card__intro {
-  font-size: 0.95rem;
-  line-height: 1.25;
+.card .card__tagline {
+  position: absolute;
+  left: 10%;
+  bottom: 8%;
+  right: 10%;
+  margin: 0;
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.1;
   letter-spacing: -0.02em;
-  color: #333333;
-  margin: 0;
-}
-
-.work-card__tagline {
-  font-size: 0.82rem;
-  color: #888888;
-  margin: 0;
-}
-
-/* ── Vertical Cards (Print Media) ── */
-.work-card--vertical {
-  width: min(78vw, 21rem);
-  aspect-ratio: 3 / 4;
-}
-
-/* ── Horizontal Cards (Digital Media) ── */
-.work-card--horizontal {
-  width: min(88vw, 30rem);
-  aspect-ratio: 4 / 3;
+  color: #777777;
 }
 
 /* ── Responsive ── */
@@ -201,15 +221,15 @@ body {
     gap: 2.5rem;
   }
 
-  .work-card--vertical {
+  .card--vertical {
     width: min(75vw, 18rem);
   }
 
-  .work-card--horizontal {
+  .card--horizontal {
     width: min(85vw, 24rem);
   }
 
-  .work-card__title {
+  .card .card__title {
     font-size: clamp(2rem, 6vw, 3rem);
   }
 }
@@ -226,13 +246,11 @@ body {
     justify-content: space-between;
   }
 
-  .work-card--vertical {
+  .card--vertical {
     width: 82vw;
-    padding: 1.75rem;
   }
 
-  .work-card--horizontal {
+  .card--horizontal {
     width: 86vw;
-    padding: 1.75rem;
   }
 }
