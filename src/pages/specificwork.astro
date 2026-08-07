@@ -31,12 +31,16 @@ const projects = obsidianProjects.map((entry, idx) => {
   }
 
   const filename = entry.id.split("/").pop()?.replace(/\.md$/, "") || "";
-  const title = entry.data.title || filename.replace(/[-_]/g, " ") || "Untitled Project";
+  const title =
+    entry.data.title || filename.replace(/[-_]/g, " ") || "Untitled Project";
 
   let rawImage = entry.data.image || entry.data.img;
   let image: string | undefined = undefined;
   if (rawImage) {
-    let cleaned = String(rawImage).replace(/["']/g, "").replace(/\\/g, "/").trim();
+    let cleaned = String(rawImage)
+      .replace(/["']/g, "")
+      .replace(/\\/g, "/")
+      .trim();
     if (cleaned.startsWith("Image/") || cleaned.startsWith("Images/")) {
       cleaned = "/" + cleaned;
     } else if (!cleaned.startsWith("/") && !cleaned.startsWith("http")) {
@@ -54,7 +58,7 @@ const projects = obsidianProjects.map((entry, idx) => {
     image,
     isHero: entry.data.isHero || false,
     aspect: String(entry.data.aspectRatio || "3/4"),
-    col: entry.data.col || ((idx % 2) + 1),
+    col: entry.data.col || (idx % 2) + 1,
     description: entry.data.description,
   };
 });
@@ -62,6 +66,7 @@ const projects = obsidianProjects.map((entry, idx) => {
 const heroProject = projects.find((p) => p.isHero) || projects[0];
 const subProjects = projects.filter((p) => p !== heroProject);
 ---
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -76,102 +81,156 @@ const subProjects = projects.filter((p) => p !== heroProject);
       <!-- Top Navigation -->
       <nav class="top-nav" aria-label="Main Navigation">
         <div class="top-nav__left">
-          <a href="/work" class="top-nav__link-left" id="nav-work-left">• Work</a>
+          <a href="/work" class="top-nav__link-left" id="nav-work-left"
+            >• Work</a
+          >
         </div>
         <div class="top-nav__right">
           <a href="/" class="top-nav__link-right" id="nav-home">Home</a>
           <a href="/work" class="top-nav__link-right" id="nav-work">Work</a>
           <a href="/posts" class="top-nav__link-right" id="nav-dp">DP</a>
-          <a href="/collections" class="top-nav__link-right" id="nav-collections">Collections</a>
+          <a
+            href="/collections"
+            class="top-nav__link-right"
+            id="nav-collections">Collections</a
+          >
         </div>
       </nav>
 
-      {projects.length === 0 ? (
-        <div class="empty-posts">
-          <p class="empty-posts__message">no uploads</p>
-        </div>
-      ) : (
-        <!-- Infinite Scroll Showcase Container -->
-        <div class="showcase-container" data-showcase-container>
-          
-          <!-- Hero Card Section -->
-          {heroProject && (
-            <a href={`/specificwork/${heroProject.slug}`} class="layout-card hero-container" aria-label={`View ${heroProject.title}`}>
-              {heroProject.image ? (
-                <img src={heroProject.image} alt={heroProject.title} class="post-card__img" style="width: 100%; height: 100%; object-fit: cover;" />
-              ) : (
-                <div class="visual-placeholder">
-                  <span>{heroProject.title}</span>
+      {
+        projects.length === 0 ? (
+          <div class="empty-posts">
+            <p class="empty-posts__message">no uploads</p>
+          </div>
+        ) : (
+          <div class="showcase-container" data-showcase-container>
+            {heroProject && (
+              <a
+                href={`/specificwork/${heroProject.slug}`}
+                class="layout-card hero-container"
+                aria-label={`View ${heroProject.title}`}
+              >
+                {heroProject.image ? (
+                  <img
+                    src={heroProject.image}
+                    alt={heroProject.title}
+                    class="post-card__img"
+                    style="width: 100%; height: 100%; object-fit: cover;"
+                  />
+                ) : (
+                  <div class="visual-placeholder">
+                    <span>{heroProject.title}</span>
+                  </div>
+                )}
+              </a>
+            )}
+
+            <section class="sub-projects-grid" aria-label="Sub project visuals">
+              <div class="sub-projects-col" data-col>
+                <div class="sub-projects-col-inner">
+                  {subProjects
+                    .filter((p) => p.col === 1)
+                    .map((p) => (
+                      <a
+                        href={`/specificwork/${p.slug}`}
+                        class="layout-card"
+                        aria-label={`View ${p.title}`}
+                      >
+                        {p.image ? (
+                          <img
+                            src={p.image}
+                            alt={p.title}
+                            class="post-card__img"
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                          />
+                        ) : (
+                          <div class="visual-placeholder">
+                            <span>{p.title}</span>
+                          </div>
+                        )}
+                      </a>
+                    ))}
+                  {subProjects
+                    .filter((p) => p.col === 1)
+                    .map((p) => (
+                      <a
+                        href={`/specificwork/${p.slug}`}
+                        class="layout-card"
+                        tabindex="-1"
+                        aria-hidden="true"
+                      >
+                        {p.image ? (
+                          <img
+                            src={p.image}
+                            alt={p.title}
+                            class="post-card__img"
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                          />
+                        ) : (
+                          <div class="visual-placeholder">
+                            <span>{p.title}</span>
+                          </div>
+                        )}
+                      </a>
+                    ))}
                 </div>
-              )}
-            </a>
-          )}
-
-          <!-- Sub Projects Grid Section -->
-          <section class="sub-projects-grid" aria-label="Sub project visuals">
-            
-            <!-- Column 1 -->
-            <div class="sub-projects-col" data-col>
-              <div class="sub-projects-col-inner">
-                {subProjects.filter(p => p.col === 1).map(p => (
-                  <a href={`/specificwork/${p.slug}`} class="layout-card" aria-label={`View ${p.title}`}>
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} class="post-card__img" style="width: 100%; height: 100%; object-fit: cover;" />
-                    ) : (
-                      <div class="visual-placeholder">
-                        <span>{p.title}</span>
-                      </div>
-                    )}
-                  </a>
-                ))}
-                {subProjects.filter(p => p.col === 1).map(p => (
-                  <a href={`/specificwork/${p.slug}`} class="layout-card" tabindex="-1" aria-hidden="true">
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} class="post-card__img" style="width: 100%; height: 100%; object-fit: cover;" />
-                    ) : (
-                      <div class="visual-placeholder">
-                        <span>{p.title}</span>
-                      </div>
-                    )}
-                  </a>
-                ))}
               </div>
-            </div>
 
-            <!-- Column 2 -->
-            <div class="sub-projects-col" data-col>
-              <div class="sub-projects-col-inner">
-                {subProjects.filter(p => p.col === 2).map(p => (
-                  <a href={`/specificwork/${p.slug}`} class="layout-card" aria-label={`View ${p.title}`}>
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} class="post-card__img" style="width: 100%; height: 100%; object-fit: cover;" />
-                    ) : (
-                      <div class="visual-placeholder">
-                        <span>{p.title}</span>
-                      </div>
-                    )}
-                  </a>
-                ))}
-                {subProjects.filter(p => p.col === 2).map(p => (
-                  <a href={`/specificwork/${p.slug}`} class="layout-card" tabindex="-1" aria-hidden="true">
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} class="post-card__img" style="width: 100%; height: 100%; object-fit: cover;" />
-                    ) : (
-                      <div class="visual-placeholder">
-                        <span>{p.title}</span>
-                      </div>
-                    )}
-                  </a>
-                ))}
+              <div class="sub-projects-col" data-col>
+                <div class="sub-projects-col-inner">
+                  {subProjects
+                    .filter((p) => p.col === 2)
+                    .map((p) => (
+                      <a
+                        href={`/specificwork/${p.slug}`}
+                        class="layout-card"
+                        aria-label={`View ${p.title}`}
+                      >
+                        {p.image ? (
+                          <img
+                            src={p.image}
+                            alt={p.title}
+                            class="post-card__img"
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                          />
+                        ) : (
+                          <div class="visual-placeholder">
+                            <span>{p.title}</span>
+                          </div>
+                        )}
+                      </a>
+                    ))}
+                  {subProjects
+                    .filter((p) => p.col === 2)
+                    .map((p) => (
+                      <a
+                        href={`/specificwork/${p.slug}`}
+                        class="layout-card"
+                        tabindex="-1"
+                        aria-hidden="true"
+                      >
+                        {p.image ? (
+                          <img
+                            src={p.image}
+                            alt={p.title}
+                            class="post-card__img"
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                          />
+                        ) : (
+                          <div class="visual-placeholder">
+                            <span>{p.title}</span>
+                          </div>
+                        )}
+                      </a>
+                    ))}
+                </div>
               </div>
-            </div>
+            </section>
 
-          </section>
-          
-          <!-- scroll height generator -->
-          <div class="scroll-mimic"></div>
-        </div>
-      )}
+            <div class="scroll-mimic" />
+          </div>
+        )
+      }
     </main>
 
     <script is:inline>
@@ -182,7 +241,9 @@ const subProjects = projects.filter((p) => p !== heroProject);
       if (container && columns.length > 0) {
         const colStates = Array.from(columns).map((col) => {
           const inner = col.querySelector(".sub-projects-col-inner");
-          const cards = inner ? inner.querySelectorAll(".layout-card:not([aria-hidden])") : [];
+          const cards = inner
+            ? inner.querySelectorAll(".layout-card:not([aria-hidden])")
+            : [];
           return {
             element: col,
             inner: inner,
@@ -237,7 +298,9 @@ const subProjects = projects.filter((p) => p !== heroProject);
           });
 
           if (currentScrollTop > 8000 && firstCol && firstCol.groupHeight > 0) {
-            const loopOffset = Math.floor((8000 - heroScrollLimit) / firstCol.groupHeight) * firstCol.groupHeight;
+            const loopOffset =
+              Math.floor((8000 - heroScrollLimit) / firstCol.groupHeight) *
+              firstCol.groupHeight;
             container.scrollTop = currentScrollTop - loopOffset;
           }
         };
@@ -245,11 +308,15 @@ const subProjects = projects.filter((p) => p !== heroProject);
         setInitialPositions();
         container.scrollTop = 0;
 
-        document.addEventListener("wheel", (e) => {
-          if (window.innerWidth > 900) {
-            container.scrollTop += e.deltaY;
-          }
-        }, { passive: true });
+        document.addEventListener(
+          "wheel",
+          (e) => {
+            if (window.innerWidth > 900) {
+              container.scrollTop += e.deltaY;
+            }
+          },
+          { passive: true },
+        );
 
         container.addEventListener("scroll", syncScroll, { passive: true });
         window.addEventListener("load", () => {
