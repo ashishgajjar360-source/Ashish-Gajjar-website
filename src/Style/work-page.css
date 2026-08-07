@@ -26,60 +26,18 @@ body {
 .work-page {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem 4rem 2rem;
+  padding: 3rem 2rem 5rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
+  gap: 4rem;
   box-sizing: border-box;
-}
-
-/* ── Top Navigation ── */
-.top-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.top-nav__left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.top-nav__link-left {
-  font-size: 0.95rem;
-  font-weight: 500;
-  text-decoration: none;
-  color: #111111;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.top-nav__right {
-  display: flex;
-  align-items: center;
-  gap: 2.25rem;
-}
-
-.top-nav__link-right {
-  font-size: 0.95rem;
-  font-weight: 500;
-  text-decoration: none;
-  color: #111111;
-  transition: opacity 200ms ease;
-}
-
-.top-nav__link-right:hover {
-  opacity: 0.6;
 }
 
 /* ── Section Header ── */
 .work-section {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .section-header {
@@ -91,7 +49,7 @@ body {
 }
 
 .section-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
   letter-spacing: -0.03em;
   margin: 0;
@@ -105,28 +63,41 @@ body {
   font-weight: 600;
 }
 
-/* ── Scroller Container ── */
-.work-scroller {
+/* ── Print Media: Column Layout (Vertical Scrolling) ── */
+.work-column-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  width: 100%;
+}
+
+/* ── Digital Media: Row Layout (Horizontal Scrolling) ── */
+.work-row-container {
+  display: flex;
+  flex-direction: row;
   gap: 2rem;
   overflow-x: auto;
-  padding-block: 1rem 1.5rem;
+  padding-block: 0.5rem 1.5rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
+  width: 100%;
 }
 
-.work-scroller::-webkit-scrollbar {
+.work-row-container::-webkit-scrollbar {
   display: none;
 }
 
-/* ── Home-Style Card Component ── */
+/* ── Home-Style Base Card ── */
 .card {
   position: relative;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex: none;
-  border-radius: 1.5rem;
   background-color: #ffffff;
+  border-radius: 1.5rem;
   box-shadow:
     0 0px 36px rgba(0, 0, 0, 0.08),
     0 0 0 1px rgba(0, 0, 0, 0.06);
@@ -144,13 +115,13 @@ body {
     0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
-/* Vertical Cards for Print Media */
+/* Vertical Cards for Print Media (Column Stack) */
 .card--vertical {
-  width: min(80vw, 22rem);
+  width: min(90vw, 24rem);
   aspect-ratio: 3 / 4;
 }
 
-/* Horizontal Cards for Digital Media */
+/* Horizontal Cards for Digital Media (Row Track) */
 .card--horizontal {
   width: min(85vw, 34rem);
   aspect-ratio: 4 / 3;
@@ -217,16 +188,16 @@ body {
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .work-page {
-    padding: 1.5rem 1.25rem 3rem 1.25rem;
-    gap: 2.5rem;
+    padding: 2rem 1.25rem 3rem 1.25rem;
+    gap: 3rem;
   }
 
   .card--vertical {
-    width: min(75vw, 18rem);
+    width: min(85vw, 20rem);
   }
 
   .card--horizontal {
-    width: min(85vw, 24rem);
+    width: min(88vw, 25rem);
   }
 
   .card .card__title {
@@ -235,22 +206,11 @@ body {
 }
 
 @media (max-width: 560px) {
-  .top-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-
-  .top-nav__right {
-    width: 100%;
-    justify-content: space-between;
-  }
-
   .card--vertical {
-    width: 82vw;
+    width: 90vw;
   }
 
   .card--horizontal {
-    width: 86vw;
+    width: 90vw;
   }
 }

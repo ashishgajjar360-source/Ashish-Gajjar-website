@@ -74,26 +74,13 @@ const digitalMediaFolders = [
   </head>
   <body>
     <main class="work-page">
-      <!-- Top Navigation -->
-      <nav class="top-nav" aria-label="Main Navigation">
-        <div class="top-nav__left">
-          <a href="/work" class="top-nav__link-left" id="nav-work-left">• Work</a>
-        </div>
-        <div class="top-nav__right">
-          <a href="/" class="top-nav__link-right" id="nav-home">Home</a>
-          <a href="/work" class="top-nav__link-right" id="nav-work">Work</a>
-          <a href="/posts" class="top-nav__link-right" id="nav-dp">DP</a>
-          <a href="/collections" class="top-nav__link-right" id="nav-collections">Collections</a>
-        </div>
-      </nav>
-
-      <!-- Print Media Section (Vertical Cards) -->
+      <!-- Print Media Section (Column Stack of Vertical Cards) -->
       <section class="work-section" aria-label="Print Media Subfolders">
         <div class="section-header">
           <h2 class="section-title">Print Media</h2>
-          <span class="section-subtitle">Vertical Cards</span>
+          <span class="section-subtitle">Vertical Column</span>
         </div>
-        <div class="work-scroller">
+        <div class="work-column-container">
           {printMediaFolders.map((folder) => (
             <a href="/specificwork" class="card card--vertical" aria-label={`View ${folder.name} in Print Media`}>
               <h4 class="frame__nav">Print Media</h4>
@@ -112,13 +99,13 @@ const digitalMediaFolders = [
         </div>
       </section>
 
-      <!-- Digital Media Section (Horizontal Cards) -->
+      <!-- Digital Media Section (Row Track of Horizontal Cards) -->
       <section class="work-section" aria-label="Digital Media Subfolders">
         <div class="section-header">
           <h2 class="section-title">Digital Media</h2>
-          <span class="section-subtitle">Horizontal Cards</span>
+          <span class="section-subtitle">Horizontal Row</span>
         </div>
-        <div class="work-scroller">
+        <div class="work-row-container">
           {digitalMediaFolders.map((folder) => (
             <a href="/specificwork" class="card card--horizontal" aria-label={`View ${folder.name} in Digital Media`}>
               <h4 class="frame__nav">Digital Media</h4>
