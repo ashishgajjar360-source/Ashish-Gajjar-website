@@ -1,6 +1,66 @@
 ---
+import { getCollection } from "astro:content";
 import "../Style/global.css";
 import "../Style/specificwork.css";
+
+const obsidianProjects = await getCollection("specificwork");
+
+const projects = obsidianProjects.map((entry, idx) => {
+  let mediaType = entry.data.mediaType;
+  if (!mediaType && entry.id.includes("/")) {
+    const parts = entry.id.split("/");
+    if (parts[0].toLowerCase().includes("print")) {
+      mediaType = "Print Media";
+    } else if (parts[0].toLowerCase().includes("digital")) {
+      mediaType = "Digital Media";
+    }
+  }
+  if (!mediaType) {
+    mediaType = "Print Media";
+  }
+
+  let category = entry.data.category || (entry.data.tags && entry.data.tags[0]);
+  if (!category && entry.id.includes("/")) {
+    const parts = entry.id.split("/");
+    if (parts.length > 1) {
+      category = parts[1];
+    }
+  }
+  if (!category) {
+    category = "Branding";
+  }
+
+  const filename = entry.id.split("/").pop()?.replace(/\.md$/, "") || "";
+  const title = entry.data.title || filename.replace(/[-_]/g, " ") || "Untitled Project";
+
+  let rawImage = entry.data.image || entry.data.img;
+  let image: string | undefined = undefined;
+  if (rawImage) {
+    let cleaned = String(rawImage).replace(/["']/g, "").replace(/\\/g, "/").trim();
+    if (cleaned.startsWith("Image/") || cleaned.startsWith("Images/")) {
+      cleaned = "/" + cleaned;
+    } else if (!cleaned.startsWith("/") && !cleaned.startsWith("http")) {
+      cleaned = "/Images/" + cleaned;
+    }
+    image = cleaned;
+  }
+
+  return {
+    id: entry.id,
+    slug: entry.id,
+    title,
+    mediaType,
+    category,
+    image,
+    isHero: entry.data.isHero || false,
+    aspect: String(entry.data.aspectRatio || "3/4"),
+    col: entry.data.col || ((idx % 2) + 1),
+    description: entry.data.description,
+  };
+});
+
+const heroProject = projects.find((p) => p.isHero) || projects[0];
+const subProjects = projects.filter((p) => p !== heroProject);
 ---
 <html lang="en">
   <head>
@@ -26,50 +86,92 @@ import "../Style/specificwork.css";
         </div>
       </nav>
 
-      <!-- Infinite Scroll Showcase Container -->
-      <div class="showcase-container" data-showcase-container>
-        
-        <!-- Hero Card Section (Scrolls naturally, does not repeat) -->
-        <section class="layout-card hero-container" aria-label="Featured visual">
-          <div class="visual-placeholder">
-            <span>Hero Image Placeholder</span>
-          </div>
-        </section>
-
-        <!-- Sub Projects Grid Section (Sticky top, loops internally) -->
-        <section class="sub-projects-grid" aria-label="Sub project visuals">
+      {projects.length === 0 ? (
+        <div class="empty-posts">
+          <p class="empty-posts__message">no uploads</p>
+        </div>
+      ) : (
+        <!-- Infinite Scroll Showcase Container -->
+        <div class="showcase-container" data-showcase-container>
           
-          <!-- Column 1 -->
-          <div class="sub-projects-col" data-col>
-            <div class="sub-projects-col-inner">
-              {[1, 2, 3, 4].map((i) => (
-                <article class="layout-card" {...(i > 1 ? { "aria-hidden": "true" } : {})} id={`sub-card-col1-${i}`}>
-                  <div class="visual-placeholder">
-                    <span>Image Placeholder 01</span>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
+          <!-- Hero Card Section -->
+          {heroProject && (
+            <a href={`/specificwork/${heroProject.slug}`} class="layout-card hero-container" aria-label={`View ${heroProject.title}`}>
+              {heroProject.image ? (
+                <img src={heroProject.image} alt={heroProject.title} class="post-card__img" style="width: 100%; height: 100%; object-fit: cover;" />
+              ) : (
+                <div class="visual-placeholder">
+                  <span>{heroProject.title}</span>
+                </div>
+              )}
+            </a>
+          )}
 
-          <!-- Column 2 -->
-          <div class="sub-projects-col" data-col>
-            <div class="sub-projects-col-inner">
-              {[1, 2, 3, 4].map((i) => (
-                <article class="layout-card" {...(i > 1 ? { "aria-hidden": "true" } : {})} id={`sub-card-col2-${i}`}>
-                  <div class="visual-placeholder">
-                    <span>Image Placeholder 02</span>
-                  </div>
-                </article>
-              ))}
+          <!-- Sub Projects Grid Section -->
+          <section class="sub-projects-grid" aria-label="Sub project visuals">
+            
+            <!-- Column 1 -->
+            <div class="sub-projects-col" data-col>
+              <div class="sub-projects-col-inner">
+                {subProjects.filter(p => p.col === 1).map(p => (
+                  <a href={`/specificwork/${p.slug}`} class="layout-card" aria-label={`View ${p.title}`}>
+                    {p.image ? (
+                      <img src={p.image} alt={p.title} class="post-card__img" style="width: 100%; height: 100%; object-fit: cover;" />
+                    ) : (
+                      <div class="visual-placeholder">
+                        <span>{p.title}</span>
+                      </div>
+                    )}
+                  </a>
+                ))}
+                {subProjects.filter(p => p.col === 1).map(p => (
+                  <a href={`/specificwork/${p.slug}`} class="layout-card" tabindex="-1" aria-hidden="true">
+                    {p.image ? (
+                      <img src={p.image} alt={p.title} class="post-card__img" style="width: 100%; height: 100%; object-fit: cover;" />
+                    ) : (
+                      <div class="visual-placeholder">
+                        <span>{p.title}</span>
+                      </div>
+                    )}
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
 
-        </section>
-        
-        <!-- scroll height generator -->
-        <div class="scroll-mimic"></div>
-      </div>
+            <!-- Column 2 -->
+            <div class="sub-projects-col" data-col>
+              <div class="sub-projects-col-inner">
+                {subProjects.filter(p => p.col === 2).map(p => (
+                  <a href={`/specificwork/${p.slug}`} class="layout-card" aria-label={`View ${p.title}`}>
+                    {p.image ? (
+                      <img src={p.image} alt={p.title} class="post-card__img" style="width: 100%; height: 100%; object-fit: cover;" />
+                    ) : (
+                      <div class="visual-placeholder">
+                        <span>{p.title}</span>
+                      </div>
+                    )}
+                  </a>
+                ))}
+                {subProjects.filter(p => p.col === 2).map(p => (
+                  <a href={`/specificwork/${p.slug}`} class="layout-card" tabindex="-1" aria-hidden="true">
+                    {p.image ? (
+                      <img src={p.image} alt={p.title} class="post-card__img" style="width: 100%; height: 100%; object-fit: cover;" />
+                    ) : (
+                      <div class="visual-placeholder">
+                        <span>{p.title}</span>
+                      </div>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+          </section>
+          
+          <!-- scroll height generator -->
+          <div class="scroll-mimic"></div>
+        </div>
+      )}
     </main>
 
     <script is:inline>
@@ -105,7 +207,6 @@ import "../Style/specificwork.css";
         const measureHeroLimit = () => {
           if (!heroContainer) return 0;
           const rect = heroContainer.getBoundingClientRect();
-          // margin-top: 2rem adds 32px gap
           return rect.height + 32;
         };
 
@@ -113,7 +214,7 @@ import "../Style/specificwork.css";
           measureColumns();
           colStates.forEach((state) => {
             if (state.groupHeight > 0) {
-              state.element.scrollTop = 0; // Lock columns at 0 initially
+              state.element.scrollTop = 0;
             }
           });
         };
@@ -127,28 +228,23 @@ import "../Style/specificwork.css";
             if (state.groupHeight === 0) return;
 
             if (currentScrollTop < heroScrollLimit) {
-              // Lock columns scroll to 0 while Hero Card is still in view
               state.element.scrollTop = 0;
             } else {
-              // Once Hero Card is scrolled out, columns scroll and wrap infinitely in unison
               const activeScroll = currentScrollTop - heroScrollLimit;
               const newScrollTop = activeScroll % state.groupHeight;
               state.element.scrollTop = newScrollTop;
             }
           });
 
-          // Loop container scroll boundaries on desktop to keep scroll area infinite
-          if (currentScrollTop > 8000 && firstCol.groupHeight > 0) {
+          if (currentScrollTop > 8000 && firstCol && firstCol.groupHeight > 0) {
             const loopOffset = Math.floor((8000 - heroScrollLimit) / firstCol.groupHeight) * firstCol.groupHeight;
             container.scrollTop = currentScrollTop - loopOffset;
           }
         };
 
-        // Initialize scroll position
         setInitialPositions();
         container.scrollTop = 0;
 
-        // Forward document-wide mousewheel to the container on desktop viewports
         document.addEventListener("wheel", (e) => {
           if (window.innerWidth > 900) {
             container.scrollTop += e.deltaY;
