@@ -1,0 +1,219 @@
+---
+import "../Style/global.css";
+import "../Style/home-card.css";
+import "../Style/posts.css";
+
+const categories = [
+  { label: "Edits", active: false },
+  { label: "Typography", active: false },
+  { label: "Graphic", active: true },
+  { label: "Photography", active: false },
+  { label: "Edits", active: false },
+];
+
+const posts = [
+  { col: 1, aspect: "3/4" },
+  { col: 1, aspect: "4/5" },
+  { col: 2, aspect: "4/3" },
+  { col: 2, aspect: "3/4" },
+  { col: 2, aspect: "4/3" },
+  { col: 3, aspect: "3/4" },
+  { col: 3, aspect: "4/5" },
+];
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Posts — Ashish Gajjar</title>
+  </head>
+  <body>
+    <main class="posts-page">
+      <!-- Back Button -->
+      <a href="/" class="back-button" id="back-to-home" aria-label="Back to Home">
+        ←
+      </a>
+
+      <!-- scrollable wrapper -->
+      <div class="masonry-container" data-masonry-container>
+        <!-- masonry grid -->
+        <div class="masonry">
+          <!-- column 1 -->
+          <div class="masonry__col" data-col>
+            <div class="masonry__col-inner">
+              {posts.filter(p => p.col === 1).map(p => (
+                <a href="/posts-details" class="post-card" aria-label="View post detail">
+                  <div class="post-card__image" style={`aspect-ratio: ${p.aspect};`}></div>
+                </a>
+              ))}
+              {posts.filter(p => p.col === 1).map(p => (
+                <a href="/posts-details" class="post-card" tabindex="-1" aria-hidden="true">
+                  <div class="post-card__image" style={`aspect-ratio: ${p.aspect};`}></div>
+                </a>
+              ))}
+            </div>
+          </div>
+          <!-- column 2 -->
+          <div class="masonry__col" data-col>
+            <div class="masonry__col-inner">
+              {posts.filter(p => p.col === 2).map(p => (
+                <a href="/posts-details" class="post-card" aria-label="View post detail">
+                  <div class="post-card__image" style={`aspect-ratio: ${p.aspect};`}></div>
+                </a>
+              ))}
+              {posts.filter(p => p.col === 2).map(p => (
+                <a href="/posts-details" class="post-card" tabindex="-1" aria-hidden="true">
+                  <div class="post-card__image" style={`aspect-ratio: ${p.aspect};`}></div>
+                </a>
+              ))}
+            </div>
+          </div>
+          <!-- column 3 -->
+          <div class="masonry__col" data-col>
+            <div class="masonry__col-inner">
+              {posts.filter(p => p.col === 3).map(p => (
+                <a href="/posts-details" class="post-card" aria-label="View post detail">
+                  <div class="post-card__image" style={`aspect-ratio: ${p.aspect};`}></div>
+                </a>
+              ))}
+              {posts.filter(p => p.col === 3).map(p => (
+                <a href="/posts-details" class="post-card" tabindex="-1" aria-hidden="true">
+                  <div class="post-card__image" style={`aspect-ratio: ${p.aspect};`}></div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+        <!-- scroll height generator -->
+        <div class="scroll-mimic"></div>
+      </div>
+
+      <!-- category sidebar -->
+      <nav class="sidebar" aria-label="Post categories">
+        <div class="sidebar-highlight"></div>
+        <div class="sidebar-viewport" data-sidebar-viewport>
+          <div class="sidebar__inner">
+            {categories.map(cat => (
+              <span class="sidebar__item">
+                {cat.label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </nav>
+    </main>
+
+    <script is:inline>
+      const container = document.querySelector("[data-masonry-container]");
+      const columns = document.querySelectorAll("[data-col]");
+
+      if (container && columns.length > 0) {
+        const colStates = Array.from(columns).map((col) => {
+          const inner = col.querySelector(".masonry__col-inner");
+          const cards = inner ? inner.querySelectorAll(".post-card:not([aria-hidden])") : [];
+          return {
+            element: col,
+            inner: inner,
+            cards: cards,
+            groupHeight: 0,
+          };
+        });
+
+        const measureColumns = () => {
+          colStates.forEach((state) => {
+            if (!state.inner) return;
+            let h = 0;
+            state.cards.forEach((card) => {
+              h += card.getBoundingClientRect().height;
+            });
+            const gap = parseFloat(getComputedStyle(state.inner).gap) || 24;
+            h += gap * state.cards.length;
+            state.groupHeight = h;
+          });
+        };
+
+        const setInitialPositions = () => {
+          measureColumns();
+          colStates.forEach((state) => {
+            if (state.groupHeight > 0) {
+              state.element.scrollTop = state.groupHeight;
+            }
+          });
+        };
+
+        // Initialize scroll positions
+        let lastScrollTop = 5000;
+        container.scrollTop = 5000;
+        setInitialPositions();
+
+        const syncScroll = () => {
+          const currentScrollTop = container.scrollTop;
+          const delta = currentScrollTop - lastScrollTop;
+          lastScrollTop = currentScrollTop;
+
+          colStates.forEach((state, index) => {
+            if (state.groupHeight === 0) return;
+            
+            // Flip direction for middle column (index 1)
+            const currentDelta = (index === 1) ? -delta : delta;
+            let newScrollTop = state.element.scrollTop + currentDelta;
+
+            // Wrap each column independently based on its group height
+            if (newScrollTop <= 0) {
+              newScrollTop += state.groupHeight;
+            } else if (newScrollTop >= state.groupHeight * 2 - state.element.clientHeight) {
+              newScrollTop -= state.groupHeight;
+            }
+
+            state.element.scrollTop = newScrollTop;
+          });
+
+          // Loop container scroll boundaries
+          if (currentScrollTop < 2000 || currentScrollTop > 8000) {
+            container.scrollTop = 5000;
+            lastScrollTop = 5000;
+          }
+        };
+
+        container.addEventListener("scroll", syncScroll, { passive: true });
+        window.addEventListener("load", setInitialPositions);
+        window.addEventListener("resize", () => {
+          measureColumns();
+        });
+      }
+
+      // Sidebar: dynamically bold the item centered in the highlight rectangle
+      const sidebarViewport = document.querySelector("[data-sidebar-viewport]");
+      if (sidebarViewport) {
+        const updateCenteredItem = () => {
+          const items = sidebarViewport.querySelectorAll(".sidebar__item");
+          const viewportRect = sidebarViewport.getBoundingClientRect();
+          const centerY = viewportRect.top + viewportRect.height / 2;
+          let closestItem = null;
+          let closestDist = Infinity;
+
+          items.forEach((item) => {
+            const itemRect = item.getBoundingClientRect();
+            const itemCenterY = itemRect.top + itemRect.height / 2;
+            const dist = Math.abs(itemCenterY - centerY);
+            if (dist < closestDist) {
+              closestDist = dist;
+              closestItem = item;
+            }
+          });
+
+          items.forEach((item) => {
+            item.classList.toggle("sidebar__item--active", item === closestItem);
+          });
+        };
+
+        sidebarViewport.addEventListener("scroll", updateCenteredItem, { passive: true });
+        window.addEventListener("load", updateCenteredItem);
+        updateCenteredItem();
+      }
+    </script>
+  </body>
+</html>
