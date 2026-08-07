@@ -73,56 +73,90 @@ const digitalMediaFolders = [
     <title>Work — Ashish Gajjar</title>
   </head>
   <body>
-    <main class="work-page">
-      <!-- Print Media Section (Column Stack of Vertical Cards) -->
-      <section class="work-section" aria-label="Print Media Subfolders">
-        <div class="section-header">
-          <h2 class="section-title">Print Media</h2>
-          <span class="section-subtitle">Vertical Column</span>
-        </div>
-        <div class="work-column-container">
-          {printMediaFolders.map((folder) => (
-            <a href="/specificwork" class="card card--vertical" aria-label={`View ${folder.name} in Print Media`}>
-              <h4 class="frame__nav">Print Media</h4>
-              <p class="card__intro">
-                {folder.intro.map((line, idx) => (
-                  <>
-                    {line}
-                    {idx < folder.intro.length - 1 && <br />}
-                  </>
-                ))}
-              </p>
-              <p class="card__title">{folder.name}</p>
-              <p class="card__tagline">{folder.tagline}</p>
-            </a>
-          ))}
-        </div>
-      </section>
+    <main class="cross-stage">
+      <!-- 3D Perspective Grid Background (Ceiling & Floor) -->
+      <div class="perspective-bg" aria-hidden="true">
+        <div class="perspective-grid--top"></div>
+        <div class="perspective-grid--bottom"></div>
+      </div>
 
-      <!-- Digital Media Section (Row Track of Horizontal Cards) -->
-      <section class="work-section" aria-label="Digital Media Subfolders">
-        <div class="section-header">
-          <h2 class="section-title">Digital Media</h2>
-          <span class="section-subtitle">Horizontal Row</span>
+      <!-- Cross Layout Wrapper -->
+      <div class="cross-stage__inner">
+        <!-- Vertical Column (Print Media Cards) -->
+        <div class="cross-column-viewport" data-column-viewport>
+          <div class="cross-column-track">
+            {printMediaFolders.map((folder) => (
+              <a href="/specificwork" class="card" aria-label={`View ${folder.name} in Print Media`}>
+                <h4 class="frame__nav">Print Media</h4>
+                <p class="card__intro">
+                  {folder.intro.map((line, idx) => (
+                    <>
+                      {line}
+                      {idx < folder.intro.length - 1 && <br />}
+                    </>
+                  ))}
+                </p>
+                <p class="card__title">{folder.name}</p>
+                <p class="card__tagline">{folder.tagline}</p>
+              </a>
+            ))}
+          </div>
         </div>
-        <div class="work-row-container">
-          {digitalMediaFolders.map((folder) => (
-            <a href="/specificwork" class="card card--horizontal" aria-label={`View ${folder.name} in Digital Media`}>
-              <h4 class="frame__nav">Digital Media</h4>
-              <p class="card__intro">
-                {folder.intro.map((line, idx) => (
-                  <>
-                    {line}
-                    {idx < folder.intro.length - 1 && <br />}
-                  </>
-                ))}
-              </p>
-              <p class="card__title">{folder.name}</p>
-              <p class="card__tagline">{folder.tagline}</p>
-            </a>
-          ))}
+
+        <!-- Horizontal Row (Digital Media Cards) -->
+        <div class="cross-row-viewport" data-row-viewport>
+          <div class="cross-row-track">
+            {digitalMediaFolders.map((folder) => (
+              <a href="/specificwork" class="card" aria-label={`View ${folder.name} in Digital Media`}>
+                <h4 class="frame__nav">Digital Media</h4>
+                <p class="card__intro">
+                  {folder.intro.map((line, idx) => (
+                    <>
+                      {line}
+                      {idx < folder.intro.length - 1 && <br />}
+                    </>
+                  ))}
+                </p>
+                <p class="card__title">{folder.name}</p>
+                <p class="card__tagline">{folder.tagline}</p>
+              </a>
+            ))}
+          </div>
         </div>
-      </section>
+      </div>
     </main>
+
+    <script is:inline>
+      const columnViewport = document.querySelector("[data-column-viewport]");
+      const rowViewport = document.querySelector("[data-row-viewport]");
+
+      if (columnViewport && rowViewport) {
+        let activeAxis = "row"; // "column" or "row"
+
+        // Column hover activation: bring column on top & direct scroll to column
+        columnViewport.addEventListener("mouseenter", () => {
+          activeAxis = "column";
+          columnViewport.style.zIndex = "5";
+          rowViewport.style.zIndex = "3";
+        });
+
+        // Row hover activation: bring row on top & direct scroll to row
+        rowViewport.addEventListener("mouseenter", () => {
+          activeAxis = "row";
+          rowViewport.style.zIndex = "5";
+          columnViewport.style.zIndex = "3";
+        });
+
+        // Wheel event listener: scrolls active axis based on current hover
+        window.addEventListener("wheel", (e) => {
+          const delta = e.deltaY || e.deltaX;
+          if (activeAxis === "column") {
+            columnViewport.scrollTop += delta;
+          } else {
+            rowViewport.scrollLeft += delta;
+          }
+        }, { passive: true });
+      }
+    </script>
   </body>
 </html>

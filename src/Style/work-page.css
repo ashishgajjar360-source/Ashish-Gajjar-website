@@ -14,203 +14,275 @@
   font-display: swap;
 }
 
-body {
-  min-height: 100vh;
+html, body {
+  width: 100vw;
+  height: 100vh;
   margin: 0;
+  padding: 0;
+  overflow: hidden;
   background-color: #eeeeee;
   font-family: "Sora", sans-serif;
   color: #111111;
-  overflow-x: hidden;
 }
 
-.work-page {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 3rem 2rem 5rem 2rem;
+.cross-stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
-  gap: 4rem;
-  box-sizing: border-box;
-}
-
-/* ── Section Header ── */
-.work-section {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.section-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  padding-bottom: 0.75rem;
-}
-
-.section-title {
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  margin: 0;
-}
-
-.section-subtitle {
-  font-size: 0.85rem;
-  color: #777777;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-}
-
-/* ── Print Media: Column Layout (Vertical Scrolling) ── */
-.work-column-container {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2.5rem;
-  width: 100%;
+  justify-content: center;
+  background: radial-gradient(circle at center, #ffffff 0%, #e9e9eb 100%);
 }
 
-/* ── Digital Media: Row Layout (Horizontal Scrolling) ── */
-.work-row-container {
+/* ── 3D Perspective Grid Background (Ceiling & Floor Grids) ── */
+.perspective-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.perspective-grid--top {
+  position: absolute;
+  top: -15%;
+  left: -50%;
+  width: 200%;
+  height: 48vh;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.08) 1.5px, transparent 1.5px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 1.5px, transparent 1.5px);
+  background-size: 64px 44px;
+  transform-origin: top center;
+  transform: perspective(450px) rotateX(-68deg);
+  mask-image: linear-gradient(to bottom, black 25%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 25%, transparent 100%);
+}
+
+.perspective-grid--bottom {
+  position: absolute;
+  bottom: -15%;
+  left: -50%;
+  width: 200%;
+  height: 48vh;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.08) 1.5px, transparent 1.5px),
+    linear-gradient(to top, rgba(0, 0, 0, 0.08) 1.5px, transparent 1.5px);
+  background-size: 64px 44px;
+  transform-origin: bottom center;
+  transform: perspective(450px) rotateX(68deg);
+  mask-image: linear-gradient(to top, black 25%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 25%, transparent 100%);
+}
+
+/* ── Cross Stage Wrapper ── */
+.cross-stage__inner {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  overflow-x: auto;
-  padding-block: 0.5rem 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Vertical Column Viewport (Print Media Cards) ── */
+.cross-column-viewport {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(88vw, 42rem);
+  overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  scroll-snap-type: x mandatory;
-  width: 100%;
+  z-index: 3;
+  scroll-snap-type: y mandatory;
+  transition: z-index 200ms ease;
 }
 
-.work-row-container::-webkit-scrollbar {
+.cross-column-viewport::-webkit-scrollbar {
   display: none;
 }
 
-/* ── Home-Style Base Card ── */
-.card {
-  position: relative;
+.cross-column-track {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  gap: 3rem;
+  padding-block: 40vh;
+}
+
+/* ── Horizontal Row Viewport (Digital Media Cards) ── */
+.cross-row-viewport {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: min(88vh, 32rem);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  z-index: 4;
+  scroll-snap-type: x mandatory;
+  transition: z-index 200ms ease;
+}
+
+.cross-row-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.cross-row-track {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3rem;
+  padding-inline: 40vw;
+}
+
+/* ── EXACT HOME-CARD.CSS CARD STYLES ── */
+.card {
+  position: relative;
+  perspective: 300px;
+  display: flex;
   flex: none;
-  background-color: #ffffff;
+  width: min(40vw, 36rem);
+  aspect-ratio: 4 / 3;
+  overflow: visible;
   border-radius: 1.5rem;
+  background-color: #eeeeee;
   box-shadow:
-    0 0px 36px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.06);
+    0 0px 36px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
   text-decoration: none;
   color: inherit;
-  overflow: hidden;
-  transition: transform 260ms cubic-bezier(0.2, 0, 0, 1), box-shadow 260ms ease;
-  scroll-snap-align: start;
+  box-sizing: border-box;
 }
 
 .card:hover {
-  transform: translateY(-6px) scale(1.015);
+  transform: scale(1.02);
   box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(0, 0, 0, 0.08);
+    0 16px 40px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
-/* Vertical Cards for Print Media (Column Stack) */
-.card--vertical {
-  width: min(90vw, 24rem);
-  aspect-ratio: 3 / 4;
-}
-
-/* Horizontal Cards for Digital Media (Row Track) */
-.card--horizontal {
-  width: min(85vw, 34rem);
-  aspect-ratio: 4 / 3;
-}
-
-.card .frame__nav {
+.frame__nav {
   position: absolute;
-  top: 8%;
-  left: 10%;
-  transform: none;
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #666666;
-}
-
-.card .card__intro {
-  position: absolute;
-  top: 20%;
-  left: 10%;
-  transform: none;
-  width: 80%;
+  top: -6%;
+  left: 27%;
+  transform: translateX(-50%);
+  width: min(100%, 18rem);
   margin: 0;
   text-align: left;
-  font-size: 1rem;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: #333333;
+  font-size: clamp(0.95rem, 1.35vw, 1.15rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
 }
 
-.card .card__title {
+.card__intro {
+  position: absolute;
+  top: 27%;
+  left: 53.5%;
+  transform: translateX(-50%);
+  width: min(100%, 18rem);
+  margin: 0;
+  text-align: left;
+  font-size: clamp(0.95rem, 1.35vw, 1.15rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.card__intro p {
+  margin: 0;
+}
+
+.card__title {
   position: absolute;
   left: 50%;
-  top: 54%;
+  top: 52%;
   transform: translate(-50%, -50%);
   margin: 0;
-  width: 90%;
-  text-align: center;
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
-  line-height: 0.9;
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  line-height: 0.86;
   font-weight: 700;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.06em;
   color: transparent;
   -webkit-text-stroke: 1.5px #111111;
-  white-space: normal;
-  word-break: break-word;
+  white-space: nowrap;
 }
 
-.card .card__tagline {
+.card__tagline {
   position: absolute;
-  left: 10%;
-  bottom: 8%;
-  right: 10%;
+  right: -0.8%;
+  bottom: 23%;
+  width: min(100%, 17rem);
   margin: 0;
   text-align: left;
-  font-size: 0.9rem;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: #777777;
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
 }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .work-page {
-    padding: 2rem 1.25rem 3rem 1.25rem;
-    gap: 3rem;
+  .card {
+    width: min(80vw, 28rem);
   }
 
-  .card--vertical {
-    width: min(85vw, 20rem);
+  .card__intro {
+    top: 18%;
+    left: 50%;
+    width: 13rem;
   }
 
-  .card--horizontal {
-    width: min(88vw, 25rem);
+  .card__title {
+    top: 52%;
+    font-size: clamp(3rem, 10vw, 5rem);
   }
 
-  .card .card__title {
-    font-size: clamp(2rem, 6vw, 3rem);
+  .card__tagline {
+    right: 9%;
+    bottom: 12%;
+    width: 14rem;
   }
 }
 
 @media (max-width: 560px) {
-  .card--vertical {
-    width: 90vw;
+  .card {
+    width: min(84vw, 24rem);
   }
 
-  .card--horizontal {
-    width: 90vw;
+  .card__intro {
+    left: 1.5rem;
+    transform: none;
+    top: 3rem;
+    width: auto;
+  }
+
+  .card__title {
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .card__tagline {
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: 2.25rem;
+    width: auto;
   }
 }
