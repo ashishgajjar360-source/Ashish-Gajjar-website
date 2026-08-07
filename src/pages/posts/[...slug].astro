@@ -1,0 +1,76 @@
+---
+import { getCollection, render } from "astro:content";
+import "../../Style/global.css";
+import "../../Style/posts-details.css";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, category, image, description } = post.data;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} — Ashish Gajjar</title>
+  </head>
+  <body>
+    <main class="posts-detail-page">
+      <!-- Top Navigation -->
+      <nav class="top-nav" aria-label="Main Navigation">
+        <div class="top-nav__left">
+          <a href="/posts" class="top-nav__link-left" id="nav-posts-left">• Posts</a>
+        </div>
+        <div class="top-nav__right">
+          <a href="/" class="top-nav__link-right" id="nav-home">Home</a>
+          <a href="/work" class="top-nav__link-right" id="nav-work">Work</a>
+          <a href="/posts" class="top-nav__link-right" id="nav-dp">DP</a>
+          <a href="/collections" class="top-nav__link-right" id="nav-collections">Collections</a>
+        </div>
+      </nav>
+
+      <!-- Main Detail Wrapper -->
+      <div class="posts-detail-wrapper">
+        <article class="post-detail-card">
+          <!-- Left Column: Image or Placeholder Visual -->
+          <div class="post-detail-visual">
+            {image ? (
+              <img src={image} alt={title} class="post-detail-image" />
+            ) : (
+              <div class="visual-placeholder">
+                <span class="visual-placeholder__text">{category}</span>
+                <span class="visual-placeholder__subtext">{title}</span>
+              </div>
+            )}
+          </div>
+
+          <!-- Right Column: Content -->
+          <div class="post-detail-content">
+            <div>
+              <h1 class="post-detail-title">{title}</h1>
+
+              <div class="post-detail-body">
+                <Content />
+              </div>
+            </div>
+
+            <!-- Signature -->
+            <div class="post-detail-signature">
+              - Ashish Gajjar
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>
