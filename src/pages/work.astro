@@ -1,15 +1,67 @@
 ---
 import "../Style/global.css";
-import "../Style/home-card.css";
-import HomeCard from "../components/HomeCard.astro";
+import "../Style/work-page.css";
 
-const workCard = {
-	eyebrow: "Work",
-	title: "Rhythm",
-	intro: ["Selected work,", "shaping motion,", "layout, and flow"],
-	tagline: ["A focused collection of", "visual experiments."],
-	href: "/specificwork",
-};
+const printMediaFolders = [
+  {
+    name: "Branding",
+    intro: ["Print identity,", "brand guidelines,", "and paper crafts."],
+    tagline: "Explore Print Branding",
+  },
+  {
+    name: "Packaging",
+    intro: ["Tactile materials,", "box structures,", "and eco packaging."],
+    tagline: "Explore Packaging",
+  },
+  {
+    name: "Invitation Cards",
+    intro: ["Custom typography,", "foil press,", "and event cards."],
+    tagline: "Explore Invitation Cards",
+  },
+  {
+    name: "Advertisement Banners",
+    intro: ["Large format print,", "posters,", "and bill boards."],
+    tagline: "Explore Print Banners",
+  },
+];
+
+const digitalMediaFolders = [
+  {
+    name: "Branding",
+    intro: ["Digital brand marks,", "color systems,", "and guidelines."],
+    tagline: "Explore Digital Branding",
+  },
+  {
+    name: "Iconography",
+    intro: ["Custom icon sets,", "vector glyphs,", "and interface symbols."],
+    tagline: "Explore Iconography",
+  },
+  {
+    name: "UI Design",
+    intro: ["Web & mobile interfaces,", "design systems,", "and flow."],
+    tagline: "Explore UI Design",
+  },
+  {
+    name: "Illustrations",
+    intro: ["Digital artwork,", "concept art,", "and character forms."],
+    tagline: "Explore Illustrations",
+  },
+  {
+    name: "Thumbnails",
+    intro: ["Cover art,", "high-CTR visuals,", "and media thumbs."],
+    tagline: "Explore Thumbnails",
+  },
+  {
+    name: "Graphics",
+    intro: ["Social graphics,", "promotional visuals,", "and media."],
+    tagline: "Explore Digital Graphics",
+  },
+  {
+    name: "Videos",
+    intro: ["Motion design,", "video edits,", "and reel sequences."],
+    tagline: "Explore Videos",
+  },
+];
 ---
 <html lang="en">
   <head>
@@ -19,24 +71,71 @@ const workCard = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <title>Work — Ashish Gajjar</title>
-    <style>
-      .card {
-        background-color: #ffffff;
-      }
-
-      .work-center {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        padding-inline: 1.5rem;
-      }
-    </style>
   </head>
   <body>
-    <main class="frame">
-      <div class="work-center">
-        <HomeCard {...workCard} />
-      </div>
+    <main class="work-page">
+      <!-- Top Navigation -->
+      <nav class="top-nav" aria-label="Main Navigation">
+        <div class="top-nav__left">
+          <a href="/work" class="top-nav__link-left" id="nav-work-left">• Work</a>
+        </div>
+        <div class="top-nav__right">
+          <a href="/" class="top-nav__link-right" id="nav-home">Home</a>
+          <a href="/work" class="top-nav__link-right" id="nav-work">Work</a>
+          <a href="/posts" class="top-nav__link-right" id="nav-dp">DP</a>
+          <a href="/collections" class="top-nav__link-right" id="nav-collections">Collections</a>
+        </div>
+      </nav>
+
+      <!-- Print Media Section (Vertical Cards) -->
+      <section class="work-section" aria-label="Print Media Subfolders">
+        <div class="section-header">
+          <h2 class="section-title">Print Media</h2>
+          <span class="section-subtitle">Vertical Cards</span>
+        </div>
+        <div class="work-scroller">
+          {printMediaFolders.map((folder) => (
+            <a href="/specificwork" class="work-card work-card--vertical" aria-label={`View ${folder.name} in Print Media`}>
+              <span class="work-card__eyebrow">Print Media</span>
+              <p class="work-card__intro">
+                {folder.intro.map((line, idx) => (
+                  <>
+                    {line}
+                    {idx < folder.intro.length - 1 && <br />}
+                  </>
+                ))}
+              </p>
+              <h3 class="work-card__title">{folder.name}</h3>
+              <p class="work-card__tagline">{folder.tagline}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- Digital Media Section (Horizontal Cards) -->
+      <section class="work-section" aria-label="Digital Media Subfolders">
+        <div class="section-header">
+          <h2 class="section-title">Digital Media</h2>
+          <span class="section-subtitle">Horizontal Cards</span>
+        </div>
+        <div class="work-scroller">
+          {digitalMediaFolders.map((folder) => (
+            <a href="/specificwork" class="work-card work-card--horizontal" aria-label={`View ${folder.name} in Digital Media`}>
+              <span class="work-card__eyebrow">Digital Media</span>
+              <p class="work-card__intro">
+                {folder.intro.map((line, idx) => (
+                  <>
+                    {line}
+                    {idx < folder.intro.length - 1 && <br />}
+                  </>
+                ))}
+              </p>
+              <h3 class="work-card__title">{folder.name}</h3>
+              <p class="work-card__tagline">{folder.tagline}</p>
+            </a>
+          ))}
+        </div>
+      </section>
     </main>
   </body>
 </html>
