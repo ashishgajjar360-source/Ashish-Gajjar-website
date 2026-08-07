@@ -40,157 +40,167 @@ const categories = categoryList.map((label, idx) => ({
         ←
       </a>
 
-      <!-- scrollable wrapper -->
-      <div class="masonry-container" data-masonry-container>
-        <!-- masonry grid -->
-        <div class="masonry">
-          <!-- column 1 -->
-          <div class="masonry__col" data-col>
-            <div class="masonry__col-inner">
-              {posts.filter(p => p.col === 1).map(p => (
-                <a href={`/posts/${p.slug}`} class="post-card" aria-label={`View ${p.title}`}>
-                  <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
-                    ) : (
-                      <div class="post-card__placeholder">
-                        <span class="post-card__placeholder-category">{p.category}</span>
-                        <span class="post-card__placeholder-title">{p.title}</span>
-                        <span class="post-card__placeholder-hint">+ Upload Image</span>
-                      </div>
-                    )}
-                  </div>
-                  <div class="post-card__info">
-                    <span class="post-card__title-label">{p.title}</span>
-                    <span class="post-card__category-badge">{p.category}</span>
-                  </div>
-                </a>
-              ))}
-              {posts.filter(p => p.col === 1).map(p => (
-                <a href={`/posts/${p.slug}`} class="post-card" tabindex="-1" aria-hidden="true">
-                  <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
-                    ) : (
-                      <div class="post-card__placeholder">
-                        <span class="post-card__placeholder-category">{p.category}</span>
-                        <span class="post-card__placeholder-title">{p.title}</span>
-                        <span class="post-card__placeholder-hint">+ Upload Image</span>
-                      </div>
-                    )}
-                  </div>
-                  <div class="post-card__info">
-                    <span class="post-card__title-label">{p.title}</span>
-                    <span class="post-card__category-badge">{p.category}</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-          <!-- column 2 -->
-          <div class="masonry__col" data-col>
-            <div class="masonry__col-inner">
-              {posts.filter(p => p.col === 2).map(p => (
-                <a href={`/posts/${p.slug}`} class="post-card" aria-label={`View ${p.title}`}>
-                  <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
-                    ) : (
-                      <div class="post-card__placeholder">
-                        <span class="post-card__placeholder-category">{p.category}</span>
-                        <span class="post-card__placeholder-title">{p.title}</span>
-                        <span class="post-card__placeholder-hint">+ Upload Image</span>
-                      </div>
-                    )}
-                  </div>
-                  <div class="post-card__info">
-                    <span class="post-card__title-label">{p.title}</span>
-                    <span class="post-card__category-badge">{p.category}</span>
-                  </div>
-                </a>
-              ))}
-              {posts.filter(p => p.col === 2).map(p => (
-                <a href={`/posts/${p.slug}`} class="post-card" tabindex="-1" aria-hidden="true">
-                  <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
-                    ) : (
-                      <div class="post-card__placeholder">
-                        <span class="post-card__placeholder-category">{p.category}</span>
-                        <span class="post-card__placeholder-title">{p.title}</span>
-                        <span class="post-card__placeholder-hint">+ Upload Image</span>
-                      </div>
-                    )}
-                  </div>
-                  <div class="post-card__info">
-                    <span class="post-card__title-label">{p.title}</span>
-                    <span class="post-card__category-badge">{p.category}</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-          <!-- column 3 -->
-          <div class="masonry__col" data-col>
-            <div class="masonry__col-inner">
-              {posts.filter(p => p.col === 3).map(p => (
-                <a href={`/posts/${p.slug}`} class="post-card" aria-label={`View ${p.title}`}>
-                  <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
-                    ) : (
-                      <div class="post-card__placeholder">
-                        <span class="post-card__placeholder-category">{p.category}</span>
-                        <span class="post-card__placeholder-title">{p.title}</span>
-                        <span class="post-card__placeholder-hint">+ Upload Image</span>
-                      </div>
-                    )}
-                  </div>
-                  <div class="post-card__info">
-                    <span class="post-card__title-label">{p.title}</span>
-                    <span class="post-card__category-badge">{p.category}</span>
-                  </div>
-                </a>
-              ))}
-              {posts.filter(p => p.col === 3).map(p => (
-                <a href={`/posts/${p.slug}`} class="post-card" tabindex="-1" aria-hidden="true">
-                  <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
-                    ) : (
-                      <div class="post-card__placeholder">
-                        <span class="post-card__placeholder-category">{p.category}</span>
-                        <span class="post-card__placeholder-title">{p.title}</span>
-                        <span class="post-card__placeholder-hint">+ Upload Image</span>
-                      </div>
-                    )}
-                  </div>
-                  <div class="post-card__info">
-                    <span class="post-card__title-label">{p.title}</span>
-                    <span class="post-card__category-badge">{p.category}</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
+      {posts.length === 0 ? (
+        <div class="empty-posts">
+          <p class="empty-posts__message">no uploads</p>
         </div>
-        <!-- scroll height generator -->
-        <div class="scroll-mimic"></div>
-      </div>
+      ) : (
+        <>
+          <!-- scrollable wrapper -->
+          <div class="masonry-container" data-masonry-container>
+            <!-- masonry grid -->
+            <div class="masonry">
+              <!-- column 1 -->
+              <div class="masonry__col" data-col>
+                <div class="masonry__col-inner">
+                  {posts.filter(p => p.col === 1).map(p => (
+                    <a href={`/posts/${p.slug}`} class="post-card" aria-label={`View ${p.title}`}>
+                      <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
+                        {p.image ? (
+                          <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
+                        ) : (
+                          <div class="post-card__placeholder">
+                            <span class="post-card__placeholder-category">{p.category}</span>
+                            <span class="post-card__placeholder-title">{p.title}</span>
+                            <span class="post-card__placeholder-hint">+ Upload Image</span>
+                          </div>
+                        )}
+                      </div>
+                      <div class="post-card__info">
+                        <span class="post-card__title-label">{p.title}</span>
+                        <span class="post-card__category-badge">{p.category}</span>
+                      </div>
+                    </a>
+                  ))}
+                  {posts.filter(p => p.col === 1).map(p => (
+                    <a href={`/posts/${p.slug}`} class="post-card" tabindex="-1" aria-hidden="true">
+                      <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
+                        {p.image ? (
+                          <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
+                        ) : (
+                          <div class="post-card__placeholder">
+                            <span class="post-card__placeholder-category">{p.category}</span>
+                            <span class="post-card__placeholder-title">{p.title}</span>
+                            <span class="post-card__placeholder-hint">+ Upload Image</span>
+                          </div>
+                        )}
+                      </div>
+                      <div class="post-card__info">
+                        <span class="post-card__title-label">{p.title}</span>
+                        <span class="post-card__category-badge">{p.category}</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <!-- column 2 -->
+              <div class="masonry__col" data-col>
+                <div class="masonry__col-inner">
+                  {posts.filter(p => p.col === 2).map(p => (
+                    <a href={`/posts/${p.slug}`} class="post-card" aria-label={`View ${p.title}`}>
+                      <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
+                        {p.image ? (
+                          <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
+                        ) : (
+                          <div class="post-card__placeholder">
+                            <span class="post-card__placeholder-category">{p.category}</span>
+                            <span class="post-card__placeholder-title">{p.title}</span>
+                            <span class="post-card__placeholder-hint">+ Upload Image</span>
+                          </div>
+                        )}
+                      </div>
+                      <div class="post-card__info">
+                        <span class="post-card__title-label">{p.title}</span>
+                        <span class="post-card__category-badge">{p.category}</span>
+                      </div>
+                    </a>
+                  ))}
+                  {posts.filter(p => p.col === 2).map(p => (
+                    <a href={`/posts/${p.slug}`} class="post-card" tabindex="-1" aria-hidden="true">
+                      <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
+                        {p.image ? (
+                          <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
+                        ) : (
+                          <div class="post-card__placeholder">
+                            <span class="post-card__placeholder-category">{p.category}</span>
+                            <span class="post-card__placeholder-title">{p.title}</span>
+                            <span class="post-card__placeholder-hint">+ Upload Image</span>
+                          </div>
+                        )}
+                      </div>
+                      <div class="post-card__info">
+                        <span class="post-card__title-label">{p.title}</span>
+                        <span class="post-card__category-badge">{p.category}</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <!-- column 3 -->
+              <div class="masonry__col" data-col>
+                <div class="masonry__col-inner">
+                  {posts.filter(p => p.col === 3).map(p => (
+                    <a href={`/posts/${p.slug}`} class="post-card" aria-label={`View ${p.title}`}>
+                      <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
+                        {p.image ? (
+                          <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
+                        ) : (
+                          <div class="post-card__placeholder">
+                            <span class="post-card__placeholder-category">{p.category}</span>
+                            <span class="post-card__placeholder-title">{p.title}</span>
+                            <span class="post-card__placeholder-hint">+ Upload Image</span>
+                          </div>
+                        )}
+                      </div>
+                      <div class="post-card__info">
+                        <span class="post-card__title-label">{p.title}</span>
+                        <span class="post-card__category-badge">{p.category}</span>
+                      </div>
+                    </a>
+                  ))}
+                  {posts.filter(p => p.col === 3).map(p => (
+                    <a href={`/posts/${p.slug}`} class="post-card" tabindex="-1" aria-hidden="true">
+                      <div class="post-card__image-container" style={`aspect-ratio: ${p.aspect};`}>
+                        {p.image ? (
+                          <img src={p.image} alt={p.title} class="post-card__img" loading="lazy" />
+                        ) : (
+                          <div class="post-card__placeholder">
+                            <span class="post-card__placeholder-category">{p.category}</span>
+                            <span class="post-card__placeholder-title">{p.title}</span>
+                            <span class="post-card__placeholder-hint">+ Upload Image</span>
+                          </div>
+                        )}
+                      </div>
+                      <div class="post-card__info">
+                        <span class="post-card__title-label">{p.title}</span>
+                        <span class="post-card__category-badge">{p.category}</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <!-- scroll height generator -->
+            <div class="scroll-mimic"></div>
+          </div>
 
-      <!-- category sidebar -->
-      <nav class="sidebar" aria-label="Post categories">
-        <div class="sidebar-highlight"></div>
-        <div class="sidebar-viewport" data-sidebar-viewport>
-          <div class="sidebar__inner">
-            {categories.map(cat => (
-              <span class="sidebar__item">
-                {cat.label}
-              </span>
-            ))}
-          </div>
-        </div>
-      </nav>
+          <!-- category sidebar -->
+          {categories.length > 0 && (
+            <nav class="sidebar" aria-label="Post categories">
+              <div class="sidebar-highlight"></div>
+              <div class="sidebar-viewport" data-sidebar-viewport>
+                <div class="sidebar__inner">
+                  {categories.map(cat => (
+                    <span class="sidebar__item">
+                      {cat.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </nav>
+          )}
+        </>
+      )}
     </main>
 
     <script is:inline>

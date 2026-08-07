@@ -11,14 +11,10 @@
             "id": "68f6858159506280",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "branding-systems.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "branding-systems"
+              "title": "New tab"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "branding-systems.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for branding-systems"
+              "title": "Backlinks"
             }
           },
           {
@@ -113,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "branding-systems.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from branding-systems"
+              "title": "Outgoing links"
             }
           },
           {
@@ -156,13 +150,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "branding-systems.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of branding-systems"
+              "title": "Outline"
             }
           }
         ]
@@ -185,9 +178,9 @@
   },
   "active": "68f6858159506280",
   "lastOpenFiles": [
+    "branding-systems.md",
     "chalse.md",
     "README.md",
-    "branding-systems.md",
     "monochrome-lens.md",
     "design-parliament.md"
   ]
