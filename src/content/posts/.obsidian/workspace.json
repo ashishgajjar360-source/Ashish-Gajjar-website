@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Graphic/Demo-1.md",
+                "file": "Edits/edits-demo.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Demo-1"
+              "title": "edits-demo"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Graphic/Demo-1.md",
+                "file": "Edits/edits-demo.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Demo-1"
+              "title": "Backlinks for edits-demo"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Graphic/Demo-1.md",
+                "file": "Edits/edits-demo.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Demo-1"
+              "title": "Outgoing links from edits-demo"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Graphic/Demo-1.md",
+                "file": "Edits/edits-demo.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Demo-1"
+              "title": "Outline of edits-demo"
             }
           }
         ]
@@ -185,13 +185,13 @@
   },
   "active": "dc36425758e82237",
   "lastOpenFiles": [
+    "Graphic/Demo-1.md",
+    "Graphic/post-1.md",
     "Sketching/sketching-demo.md",
     "Photography/photography-demo.md",
     "Packaging/packaging-demo.md",
-    "Graphic/post-1.md",
     "Branding/branding-demo.md",
     "Branding/Branding-1.md",
-    "Graphic/Demo-1.md",
     "Untitled.md",
     "Edits/edits-demo.md",
     "post-2.md",

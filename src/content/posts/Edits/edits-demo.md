@@ -1,10 +1,10 @@
 ---
-title: "Motion & Color Grading"
-image: "/Images/posts.png"
-aspectRatio: "16/9"
+title: Motion & Color Grading
+image: /Images/Screenshot_20240703_204206_Pinterest.jpg
+aspectRatio: 16/9
 col: 1
-date: "2026-08-07"
-description: "Digital photo manipulation and cinematic edits."
+date: 2026-08-07
+description: Digital photo manipulation and cinematic edits.
 ---
 
 # Motion & Color Grading

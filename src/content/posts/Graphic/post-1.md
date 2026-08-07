@@ -13,6 +13,6 @@ tags:
 
 Welcome to this post showcase.
 
-![Design Artwork](/123.jpg)
+
 
 This is a sample post created with Obsidian markdown format.
