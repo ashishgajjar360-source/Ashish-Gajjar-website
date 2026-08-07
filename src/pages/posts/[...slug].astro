@@ -13,7 +13,23 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const { title, category, image, description } = post.data;
+
+// Fallback calculations for title, category, and image
+const filename = post.id.split("/").pop()?.replace(/\.md$/, "") || "";
+const title = post.data.title || filename.replace(/[-_]/g, " ") || "Untitled";
+
+let category = post.data.category || (post.data.tags && post.data.tags[0]);
+if (!category && post.id.includes("/")) {
+  category = post.id.split("/")[0];
+}
+
+let image = post.data.image;
+if (image) {
+  image = image.replace(/["']/g, "").replace(/\\/g, "/");
+  if (!image.startsWith("/") && !image.startsWith("http")) {
+    image = "/" + image;
+  }
+}
 ---
 <html lang="en">
   <head>

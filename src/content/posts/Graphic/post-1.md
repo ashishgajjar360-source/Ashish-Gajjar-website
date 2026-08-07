@@ -1,4 +1,5 @@
 ---
+title: "Design & Exploration"
 image: /123.jpg
 aspectRatio: 3/4
 col: 1
