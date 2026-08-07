@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Sketching/Post-001.md",
+                "file": "Branding/Branding-1.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Post-001"
+              "title": "Branding-1"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Sketching/Post-001.md",
+                "file": "Branding/Branding-1.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Post-001"
+              "title": "Backlinks for Branding-1"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Sketching/Post-001.md",
+                "file": "Branding/Branding-1.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Post-001"
+              "title": "Outgoing links from Branding-1"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Sketching/Post-001.md",
+                "file": "Branding/Branding-1.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Post-001"
+              "title": "Outline of Branding-1"
             }
           }
         ]
@@ -185,14 +185,14 @@
   },
   "active": "dc36425758e82237",
   "lastOpenFiles": [
-    "Sketching/sketching-demo.md",
-    "Sketching/Post-001.md",
-    "Edits/edits-demo.md",
+    "Branding/branding-demo.md",
     "Graphic/Demo-1.md",
     "Graphic/post-1.md",
+    "Sketching/Post-001.md",
+    "Sketching/sketching-demo.md",
+    "Edits/edits-demo.md",
     "Photography/photography-demo.md",
     "Packaging/packaging-demo.md",
-    "Branding/branding-demo.md",
     "Branding/Branding-1.md",
     "Untitled.md",
     "post-2.md",
