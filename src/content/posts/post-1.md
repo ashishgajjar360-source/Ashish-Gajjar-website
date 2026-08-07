@@ -4,6 +4,8 @@ aspectRatio: 3/4
 col: 1
 date: 2026-08-07
 description: A showcase of graphic design exploration.
+tags:
+  - Graphic
 ---
 
 # Design & Exploration
