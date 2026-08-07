@@ -1,6 +1,6 @@
 ---
 title: Demo-2
-image: /Screenshot_20240721_124803_Instagram.jpg
+image: /Image/Screenshot_20240721_124803_Instagram.jpg
 aspectRatio: 16/9
 date: 2026-08-08
 col: 3
