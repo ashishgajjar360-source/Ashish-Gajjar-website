@@ -63,6 +63,7 @@ const digitalMediaFolders = [
   },
 ];
 ---
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -85,42 +86,54 @@ const digitalMediaFolders = [
         <!-- Vertical Column (Print Media Cards) -->
         <div class="cross-column-viewport" data-column-viewport>
           <div class="cross-column-track">
-            {printMediaFolders.map((folder) => (
-              <a href="/specificwork" class="card" aria-label={`View ${folder.name} in Print Media`}>
-                <h4 class="frame__nav">Print Media</h4>
-                <p class="card__intro">
-                  {folder.intro.map((line, idx) => (
-                    <>
-                      {line}
-                      {idx < folder.intro.length - 1 && <br />}
-                    </>
-                  ))}
-                </p>
-                <p class="card__title">{folder.name}</p>
-                <p class="card__tagline">{folder.tagline}</p>
-              </a>
-            ))}
+            {
+              printMediaFolders.map((folder) => (
+                <a
+                  href="/specificwork"
+                  class="card"
+                  aria-label={`View ${folder.name} in Print Media`}
+                >
+                  <h4 class="frame__nav">Print Media</h4>
+                  <p class="card__intro">
+                    {folder.intro.map((line, idx) => (
+                      <>
+                        {line}
+                        {idx < folder.intro.length - 1 && <br />}
+                      </>
+                    ))}
+                  </p>
+                  <p class="card__title">{folder.name}</p>
+                  <p class="card__tagline">{folder.tagline}</p>
+                </a>
+              ))
+            }
           </div>
         </div>
 
         <!-- Horizontal Row (Digital Media Cards) -->
         <div class="cross-row-viewport" data-row-viewport>
           <div class="cross-row-track">
-            {digitalMediaFolders.map((folder) => (
-              <a href="/specificwork" class="card" aria-label={`View ${folder.name} in Digital Media`}>
-                <h4 class="frame__nav">Digital Media</h4>
-                <p class="card__intro">
-                  {folder.intro.map((line, idx) => (
-                    <>
-                      {line}
-                      {idx < folder.intro.length - 1 && <br />}
-                    </>
-                  ))}
-                </p>
-                <p class="card__title">{folder.name}</p>
-                <p class="card__tagline">{folder.tagline}</p>
-              </a>
-            ))}
+            {
+              digitalMediaFolders.map((folder) => (
+                <a
+                  href="/specificwork"
+                  class="card"
+                  aria-label={`View ${folder.name} in Digital Media`}
+                >
+                  <h4 class="frame__nav">Digital Media</h4>
+                  <p class="card__intro">
+                    {folder.intro.map((line, idx) => (
+                      <>
+                        {line}
+                        {idx < folder.intro.length - 1 && <br />}
+                      </>
+                    ))}
+                  </p>
+                  <p class="card__title">{folder.name}</p>
+                  <p class="card__tagline">{folder.tagline}</p>
+                </a>
+              ))
+            }
           </div>
         </div>
       </div>
@@ -132,30 +145,165 @@ const digitalMediaFolders = [
 
       if (columnViewport && rowViewport) {
         let activeAxis = "row"; // "column" or "row"
+        let rAFId = null;
 
-        // Column hover activation: bring column on top & direct scroll to column
-        columnViewport.addEventListener("mouseenter", () => {
-          activeAxis = "column";
-          columnViewport.style.zIndex = "5";
-          rowViewport.style.zIndex = "3";
-        });
-
-        // Row hover activation: bring row on top & direct scroll to row
-        rowViewport.addEventListener("mouseenter", () => {
-          activeAxis = "row";
-          rowViewport.style.zIndex = "5";
-          columnViewport.style.zIndex = "3";
-        });
-
-        // Wheel event listener: scrolls active axis based on current hover
-        window.addEventListener("wheel", (e) => {
-          const delta = e.deltaY || e.deltaX;
-          if (activeAxis === "column") {
-            columnViewport.scrollTop += delta;
+        const setContainerZIndex = (axis) => {
+          activeAxis = axis;
+          if (axis === "column") {
+            columnViewport.style.zIndex = "10";
+            rowViewport.style.zIndex = "2";
           } else {
-            rowViewport.scrollLeft += delta;
+            rowViewport.style.zIndex = "10";
+            columnViewport.style.zIndex = "2";
           }
-        }, { passive: true });
+        };
+
+        const updateCardsInViewport = (viewport, isVertical) => {
+          const cards = viewport.querySelectorAll(".card");
+          if (!cards.length) return;
+
+          const vpRect = viewport.getBoundingClientRect();
+          const vpCenter = isVertical
+            ? vpRect.top + vpRect.height / 2
+            : vpRect.left + vpRect.width / 2;
+          const halfSpan = isVertical ? vpRect.height / 2 : vpRect.width / 2;
+
+          cards.forEach((card) => {
+            const cardRect = card.getBoundingClientRect();
+            const cardCenter = isVertical
+              ? cardRect.top + cardRect.height / 2
+              : cardRect.left + cardRect.width / 2;
+
+            // Normalized distance ratio: 0 at center, 1 at viewport boundary
+            const distRatio = Math.min(
+              1,
+              Math.abs(cardCenter - vpCenter) / (halfSpan || 1),
+            );
+
+            // Centered card gets highest z-index (100) inside its container
+            const zIndex = Math.max(1, Math.round(100 - distRatio * 80));
+
+            card.style.setProperty("--card-z-index", String(zIndex));
+          });
+        };
+
+        const updateAllCards = () => {
+          rAFId = null;
+          updateCardsInViewport(columnViewport, true);
+          updateCardsInViewport(rowViewport, false);
+        };
+
+        const requestCardsUpdate = () => {
+          if (!rAFId) {
+            rAFId = requestAnimationFrame(updateAllCards);
+          }
+        };
+
+        // Scroll listeners on both viewports track last used scroll & update card sizes/z-index
+        columnViewport.addEventListener(
+          "scroll",
+          () => {
+            setContainerZIndex("column");
+            requestCardsUpdate();
+          },
+          { passive: true },
+        );
+
+        rowViewport.addEventListener(
+          "scroll",
+          () => {
+            setContainerZIndex("row");
+            requestCardsUpdate();
+          },
+          { passive: true },
+        );
+
+        // Hover & touch activation
+        columnViewport.addEventListener("mouseenter", () => {
+          setContainerZIndex("column");
+          requestCardsUpdate();
+        });
+
+        rowViewport.addEventListener("mouseenter", () => {
+          setContainerZIndex("row");
+          requestCardsUpdate();
+        });
+
+        columnViewport.addEventListener(
+          "touchstart",
+          () => {
+            setContainerZIndex("column");
+            requestCardsUpdate();
+          },
+          { passive: true },
+        );
+
+        rowViewport.addEventListener(
+          "touchstart",
+          () => {
+            setContainerZIndex("row");
+            requestCardsUpdate();
+          },
+          { passive: true },
+        );
+
+        // Wheel event listener: updates active scroll axis based on target or delta and scrolls active axis
+        window.addEventListener(
+          "wheel",
+          (e) => {
+            if (columnViewport.contains(e.target)) {
+              setContainerZIndex("column");
+            } else if (rowViewport.contains(e.target)) {
+              setContainerZIndex("row");
+            } else if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+              setContainerZIndex("column");
+            } else if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+              setContainerZIndex("row");
+            }
+
+            const delta = e.deltaY || e.deltaX;
+            if (activeAxis === "column") {
+              columnViewport.scrollTop += delta;
+            } else {
+              rowViewport.scrollLeft += delta;
+            }
+            requestCardsUpdate();
+          },
+          { passive: true },
+        );
+
+        const fitCardTitles = () => {
+          document.querySelectorAll(".card").forEach((card) => {
+            const title = card.querySelector(".card__title");
+            if (!title) return;
+
+            title.style.fontSize = "";
+            const maxW = card.clientWidth * 0.92;
+            let currentSize = parseFloat(window.getComputedStyle(title).fontSize);
+
+            while (title.scrollWidth > maxW && currentSize > 32) {
+              currentSize -= 1;
+              title.style.fontSize = `${currentSize}px`;
+            }
+          });
+        };
+
+        // Initial state & window resize binding
+        setContainerZIndex("row");
+        updateAllCards();
+        fitCardTitles();
+        window.addEventListener("load", () => {
+          updateAllCards();
+          fitCardTitles();
+        });
+        window.addEventListener(
+          "resize",
+          () => {
+            updateAllCards();
+            fitCardTitles();
+          },
+          { passive: true },
+        );
       }
     </script>
   </body>
