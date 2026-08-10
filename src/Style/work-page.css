@@ -14,13 +14,14 @@
   font-display: swap;
 }
 
+
+
 html, body {
   width: 100vw;
   height: 100vh;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #eeeeee;
   font-family: "Sora", sans-serif;
   color: #111111;
 }
@@ -33,7 +34,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, #ffffff 0%, #e9e9eb 100%);
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.4) 0%, rgba(233, 233, 235, 0.7) 100%);
 }
 
 /* ── 3D Perspective Grid Background (Ceiling & Floor Grids) ── */
@@ -45,37 +46,8 @@ html, body {
   z-index: 0;
 }
 
-.perspective-grid--top {
-  position: absolute;
-  top: -15%;
-  left: -50%;
-  width: 200%;
-  height: 48vh;
-  background-image:
-    linear-gradient(to right, rgba(0, 0, 0, 0.08) 1.5px, transparent 1.5px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 1.5px, transparent 1.5px);
-  background-size: 64px 44px;
-  transform-origin: top center;
-  transform: perspective(450px) rotateX(-68deg);
-  mask-image: linear-gradient(to bottom, black 25%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 25%, transparent 100%);
-}
 
-.perspective-grid--bottom {
-  position: absolute;
-  bottom: -15%;
-  left: -50%;
-  width: 200%;
-  height: 48vh;
-  background-image:
-    linear-gradient(to right, rgba(0, 0, 0, 0.08) 1.5px, transparent 1.5px),
-    linear-gradient(to top, rgba(0, 0, 0, 0.08) 1.5px, transparent 1.5px);
-  background-size: 64px 44px;
-  transform-origin: bottom center;
-  transform: perspective(450px) rotateX(68deg);
-  mask-image: linear-gradient(to top, black 25%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, black 25%, transparent 100%);
-}
+
 
 /* ── Cross Stage Wrapper ── */
 .cross-stage__inner {
@@ -95,9 +67,9 @@ html, body {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: min(92vw, 48rem);
+  width: min(96vw, 54rem);
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: visible;
   scrollbar-width: none;
   -ms-overflow-style: none;
   z-index: 3;
@@ -113,8 +85,9 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3rem;
+  gap: 3.5rem;
   padding-block: 40vh;
+  padding-inline: 2rem;
 }
 
 /* ── Horizontal Row Viewport (Digital Media Cards) ── */
@@ -124,9 +97,11 @@ html, body {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  height: min(92vh, 36rem);
+  height: min(96vh, 46rem);
+  display: flex;
+  align-items: center;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   scrollbar-width: none;
   -ms-overflow-style: none;
   z-index: 4;
@@ -142,8 +117,9 @@ html, body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 3rem;
+  gap: 3.5rem;
   padding-inline: 40vw;
+  padding-block: 3.5rem;
 }
 
 /* ── EXACT HOME-CARD.CSS CARD STYLES ── */
@@ -165,21 +141,17 @@ html, body {
   transform-style: preserve-3d;
   transform-origin: center center;
   z-index: var(--card-z-index, 1);
+  transform: perspective(1000px) rotateX(var(--card-rotate-x, 0deg)) rotateY(var(--card-rotate-y, 0deg)) scale(var(--card-scale, 1));
   transition:
     transform 160ms ease,
     box-shadow 160ms ease,
-    z-index 160ms ease;
+    z-index 160ms ease,
+    opacity 200ms ease;
   text-decoration: none;
   color: inherit;
   box-sizing: border-box;
 }
 
-.card:hover {
-  transform: scale(1.02);
-  box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(0, 0, 0, 0.1);
-}
 
 .frame__nav {
   position: absolute;

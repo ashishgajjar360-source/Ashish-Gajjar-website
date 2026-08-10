@@ -26,6 +26,9 @@ const cards = [
     href: "/posts",
   },
 ];
+
+// Repeat 5 times for smooth infinite looping on home page
+const loopedCards = Array(5).fill(cards).flat();
 ---
 
 <html lang="en">
@@ -39,15 +42,20 @@ const cards = [
   </head>
   <body>
     <main class="frame">
+      <!-- 3D Perspective Grid Background (Ceiling & Floor) -->
+      <div class="perspective-bg" aria-hidden="true">
+        <div class="perspective-grid--top"></div>
+        <div class="perspective-grid--bottom"></div>
+      </div>
+
       <section class="scroller" aria-label="Horizontal portfolio cards">
-        <div class="scroller__viewport" data-scroller-viewport>
+        <div
+          class="scroller__viewport"
+          data-scroller-viewport
+          data-count={cards.length}
+        >
           <div class="scroller__track" data-scroller-track>
-            <div class="scroller__group" data-scroller-group>
-              {cards.map((card) => <HomeCard {...card} />)}
-            </div>
-            <div class="scroller__group" aria-hidden="true">
-              {cards.map((card) => <HomeCard {...card} />)}
-            </div>
+            {loopedCards.map((card) => <HomeCard {...card} />)}
           </div>
         </div>
       </section>
@@ -56,27 +64,39 @@ const cards = [
     <script is:inline>
       const viewport = document.querySelector("[data-scroller-viewport]");
       const track = document.querySelector("[data-scroller-track]");
-      const firstGroup = document.querySelector("[data-scroller-group]");
       const cards = document.querySelectorAll(".card");
 
-      if (viewport && track && firstGroup) {
-        let groupWidth = 0;
-        let isSyncing = false;
+      if (viewport && track) {
         let frameId = 0;
+        const cardCount = parseInt(viewport.dataset.count || "3", 10);
 
-        const setLoopPosition = () => {
-          groupWidth = firstGroup.getBoundingClientRect().width;
-          if (groupWidth > 0) {
-            viewport.scrollLeft = groupWidth;
+        const checkLoop = () => {
+          if (cards.length < cardCount * 3) return;
+          const setLength = cards[cardCount].offsetLeft - cards[0].offsetLeft;
+          if (!setLength) return;
+
+          if (viewport.scrollLeft < setLength * 1) {
+            viewport.scrollLeft += setLength * 2;
+          } else if (viewport.scrollLeft > setLength * 3) {
+            viewport.scrollLeft -= setLength * 2;
+          }
+        };
+
+        const initLoopScroll = () => {
+          if (cards.length >= cardCount * 3) {
+            const setLength = cards[cardCount].offsetLeft - cards[0].offsetLeft;
+            if (setLength && viewport.scrollLeft === 0) {
+              const midCardIndex = cardCount * 2; // start of middle set
+              viewport.scrollLeft =
+                cards[midCardIndex].offsetLeft -
+                (viewport.clientWidth - cards[midCardIndex].offsetWidth) / 2;
+            }
           }
         };
 
         const updateCardPerspective = () => {
           frameId = 0;
-
-          if (!cards.length) {
-            return;
-          }
+          if (!cards.length) return;
 
           const viewportRect = viewport.getBoundingClientRect();
           const viewportCenter = viewportRect.left + viewportRect.width / 2;
@@ -88,60 +108,44 @@ const cards = [
               (cardCenter - viewportCenter) / (viewportRect.width / 2 || 1);
             const distance = Math.min(1, Math.abs(offset));
             const direction = offset < 0 ? 1 : -1;
-            const rotateY = direction * distance * 18;
+            const rotateY = direction * distance * 20;
             const scale = 1 - distance * 0.08;
 
-            card.style.setProperty("--card-rotate", `${rotateY}deg`);
+            card.style.setProperty("--card-rotate", `${rotateY.toFixed(2)}deg`);
             card.style.setProperty("--card-scale", scale.toFixed(3));
           });
         };
 
         const requestCardPerspectiveUpdate = () => {
-          if (frameId) {
-            return;
-          }
-
-          frameId = window.requestAnimationFrame(updateCardPerspective);
-        };
-
-        const wrapScroll = () => {
-          if (isSyncing || groupWidth === 0) {
-            return;
-          }
-
-          if (viewport.scrollLeft <= 0) {
-            isSyncing = true;
-            viewport.scrollLeft = groupWidth;
-            isSyncing = false;
-            return;
-          }
-
-          if (viewport.scrollLeft >= groupWidth * 2 - viewport.clientWidth) {
-            isSyncing = true;
-            viewport.scrollLeft = groupWidth;
-            isSyncing = false;
+          if (!frameId) {
+            frameId = window.requestAnimationFrame(updateCardPerspective);
           }
         };
 
-        setLoopPosition();
-        requestCardPerspectiveUpdate();
-        window.addEventListener("load", setLoopPosition);
-        window.addEventListener("resize", setLoopPosition);
+        initLoopScroll();
+        updateCardPerspective();
+
         viewport.addEventListener(
           "scroll",
           () => {
-            wrapScroll();
+            checkLoop();
             requestCardPerspectiveUpdate();
           },
           { passive: true },
         );
 
-        if (typeof ResizeObserver !== "undefined") {
-          const observer = new ResizeObserver(setLoopPosition);
-          observer.observe(track);
-          observer.observe(firstGroup);
-          observer.observe(viewport);
-        }
+        window.addEventListener("load", () => {
+          initLoopScroll();
+          updateCardPerspective();
+        });
+
+        window.addEventListener(
+          "resize",
+          () => {
+            updateCardPerspective();
+          },
+          { passive: true },
+        );
       }
     </script>
   </body>
