@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import "../../Style/global.css";
 import "../../Style/posts-details.css";
+import HeaderNav from "../../components/HeaderNav.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("specificwork");
@@ -46,18 +47,7 @@ if (image) {
   </head>
   <body>
     <main class="posts-detail-page">
-      <!-- Top Navigation -->
-      <nav class="top-nav" aria-label="Main Navigation">
-        <div class="top-nav__left">
-          <a href="/specificwork" class="top-nav__link-left" id="nav-work-left">• Work</a>
-        </div>
-        <div class="top-nav__right">
-          <a href="/" class="top-nav__link-right" id="nav-home">Home</a>
-          <a href="/work" class="top-nav__link-right" id="nav-work">Work</a>
-          <a href="/posts" class="top-nav__link-right" id="nav-dp">DP</a>
-          <a href="/collections" class="top-nav__link-right" id="nav-collections">Collections</a>
-        </div>
-      </nav>
+      <HeaderNav currentLabel="Work" currentHref="/specificwork" />
 
       <!-- Main Detail Wrapper -->
       <div class="posts-detail-wrapper">

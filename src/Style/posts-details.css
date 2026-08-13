@@ -1,4 +1,4 @@
-stibody {
+body {
   margin: 0;
   font-family: "Sora", sans-serif;
   color: #111111;
@@ -171,17 +171,17 @@ stibody {
 }
 
 /* ── Responsive Breaks ── */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .posts-detail-page {
-    padding: 1.5rem 1.25rem;
-    gap: 1.5rem;
+    padding: 1.25rem 1rem;
+    gap: 1.25rem;
   }
 
   .post-detail-card {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2rem 1.75rem;
-    border-radius: 1.4rem;
+    gap: 1.75rem;
+    padding: 1.75rem 1.25rem;
+    border-radius: 1.2rem;
   }
 
   .post-detail-visual {
@@ -190,7 +190,7 @@ stibody {
   }
 
   .post-detail-title {
-    font-size: 2.25rem;
+    font-size: 2rem;
     margin-bottom: 1.25rem;
   }
 
@@ -200,25 +200,7 @@ stibody {
   }
 
   .post-detail-signature {
-    margin-top: 2rem;
+    margin-top: 1.75rem;
     font-size: 1.1rem;
-  }
-}
-
-@media (max-width: 560px) {
-  .top-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-
-  .top-nav__right {
-    width: 100%;
-    justify-content: space-between;
-    gap: 0.5rem;
-  }
-
-  .top-nav__link-right {
-    font-size: 0.85rem;
   }
 }

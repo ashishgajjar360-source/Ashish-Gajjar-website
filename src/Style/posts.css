@@ -3,10 +3,16 @@ body {
   height: 100vh;
 }
 
+.posts-header-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.5rem 2.5rem 0 2.5rem;
+}
+
 .posts-page {
   display: flex;
-  height: 100vh;
-  padding: 2.5rem;
+  height: calc(100vh - 6rem);
+  padding: 1.5rem 2.5rem 2.5rem 2.5rem;
   gap: 2rem;
   overflow: hidden;
   position: relative;
@@ -285,11 +291,21 @@ body {
 }
 
 /* ── responsive ── */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto;
+    height: auto;
+  }
+
+  .posts-header-wrapper {
+    padding: 1.25rem 1rem 0 1rem;
+  }
+
   .posts-page {
     flex-direction: column-reverse;
-    padding: 1.5rem;
-    height: 100vh;
+    padding: 1rem 1rem 1.25rem 1rem;
+    height: auto;
+    gap: 1.25rem;
   }
 
   .sidebar {

@@ -1,0 +1,64 @@
+---
+interface Props {
+  currentLabel?: string;
+  currentHref?: string;
+}
+
+const { currentLabel = "Work", currentHref = "/work" } = Astro.props;
+---
+
+<nav class="top-nav" aria-label="Main Navigation">
+  <div class="top-nav__left">
+    <a href={currentHref} class="top-nav__link-left">• {currentLabel}</a>
+  </div>
+
+  <button
+    class="hamburger-toggle"
+    aria-label="Toggle navigation menu"
+    aria-expanded="false"
+    data-hamburger-toggle
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="top-nav__right" data-nav-menu>
+    <a href="/" class="top-nav__link-right" id="nav-home">Home</a>
+    <a href="/work" class="top-nav__link-right" id="nav-work">Work</a>
+    <a href="/posts" class="top-nav__link-right" id="nav-posts">Posts</a>
+    <a href="/collections" class="top-nav__link-right" id="nav-collections">Collections</a>
+  </div>
+</nav>
+
+<script is:inline>
+  (() => {
+    const initNav = () => {
+      const toggle = document.querySelector("[data-hamburger-toggle]");
+      const menu = document.querySelector("[data-nav-menu]");
+
+      if (toggle && menu) {
+        toggle.onclick = (e) => {
+          e.stopPropagation();
+          const isOpen = menu.classList.toggle("is-open");
+          toggle.classList.toggle("is-active");
+          toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        };
+
+        document.onclick = (e) => {
+          if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+            menu.classList.remove("is-open");
+            toggle.classList.remove("is-active");
+            toggle.setAttribute("aria-expanded", "false");
+          }
+        };
+      }
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initNav);
+    } else {
+      initNav();
+    }
+  })();
+</script>

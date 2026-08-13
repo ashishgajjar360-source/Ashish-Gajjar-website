@@ -1,0 +1,42 @@
+---
+import "../Style/global.css";
+import HeaderNav from "../components/HeaderNav.astro";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Collections — Ashish Gajjar</title>
+    <style>
+      .collections-page {
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 2.5rem 2rem;
+        min-height: 100vh;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+      }
+      @media (max-width: 768px) {
+        .collections-page {
+          padding: 1.25rem 1rem;
+          gap: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="collections-page">
+      <HeaderNav currentLabel="Collections" currentHref="/collections" />
+      <div>
+        <h1 style="font-size: 2.75rem; font-weight: 700; margin: 0 0 1rem 0; letter-spacing: -0.03em;">Collections</h1>
+        <p style="font-size: 1.1rem; color: #555555; line-height: 1.5;">Curated archives and design assets coming soon.</p>
+      </div>
+    </main>
+  </body>
+</html>

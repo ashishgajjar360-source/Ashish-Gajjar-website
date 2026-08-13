@@ -1,6 +1,7 @@
 ---
 import "../Style/global.css";
 import "../Style/work-page.css";
+import HeaderNav from "../components/HeaderNav.astro";
 
 const printMediaFolders = [
   {
@@ -79,6 +80,10 @@ const loopedDigitalMediaFolders = Array(5).fill(digitalMediaFolders).flat();
   </head>
   <body>
     <main class="cross-stage">
+      <div class="work-header-wrapper">
+        <HeaderNav currentLabel="Work" currentHref="/work" />
+      </div>
+
       <!-- 3D Perspective Grid Background (Ceiling & Floor) -->
       <div class="perspective-bg" aria-hidden="true">
         <div class="perspective-grid--top"></div>
@@ -103,7 +108,7 @@ const loopedDigitalMediaFolders = Array(5).fill(digitalMediaFolders).flat();
                 >
                   <h4 class="frame__nav">Print Media</h4>
                   <p class="card__intro">
-                    {folder.intro.map((line, idx) => (
+                    {folder.intro.map((line: string, idx: number) => (
                       <>
                         {line}
                         {idx < folder.intro.length - 1 && <br />}
@@ -134,7 +139,7 @@ const loopedDigitalMediaFolders = Array(5).fill(digitalMediaFolders).flat();
                 >
                   <h4 class="frame__nav">Digital Media</h4>
                   <p class="card__intro">
-                    {folder.intro.map((line, idx) => (
+                    {folder.intro.map((line: string, idx: number) => (
                       <>
                         {line}
                         {idx < folder.intro.length - 1 && <br />}
@@ -353,7 +358,7 @@ const loopedDigitalMediaFolders = Array(5).fill(digitalMediaFolders).flat();
               setContainerZIndex("row");
             }
 
-            const delta = e.deltaY || e.deltaX;
+            const delta = (e.deltaY || e.deltaX) * 0.4;
             if (activeAxis === "column") {
               columnViewport.scrollTop += delta;
               checkColumnLoop();

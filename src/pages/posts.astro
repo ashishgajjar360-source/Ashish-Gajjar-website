@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import "../Style/global.css";
-import "../Style/home-card.css";
 import "../Style/posts.css";
+import HeaderNav from "../components/HeaderNav.astro";
 
 const ALL_CATEGORIES = [
   "All",
@@ -73,11 +73,10 @@ const categories = ALL_CATEGORIES.map((label, idx) => ({
     <title>Posts — Ashish Gajjar</title>
   </head>
   <body>
+    <div class="posts-header-wrapper">
+      <HeaderNav currentLabel="Posts" currentHref="/posts" />
+    </div>
     <main class="posts-page">
-      <!-- Back Button -->
-      <a href="/" class="back-button" id="back-to-home" aria-label="Back to Home">
-        ←
-      </a>
 
       {posts.length === 0 ? (
         <div class="empty-posts">
