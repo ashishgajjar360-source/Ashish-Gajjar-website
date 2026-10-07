@@ -218,25 +218,31 @@ const subProjects = projects.filter((p) => p !== heroProject);
     </main>
 
     <script is:inline>
-      const container = document.querySelector("[data-showcase-container]");
-      const heroContainer = document.querySelector(".hero-container");
-      const columns = document.querySelectorAll("[data-col]");
+      (() => {
+        const container = document.querySelector("[data-showcase-container]");
+        const heroContainer = document.querySelector(".hero-container");
+        const columns = document.querySelectorAll("[data-col]");
 
-      if (container && columns.length > 0) {
+        if (!container || columns.length === 0) return;
+
         const colStates = Array.from(columns).map((col) => {
           const inner = col.querySelector(".sub-projects-col-inner");
           const cards = inner
-            ? inner.querySelectorAll(".layout-card:not([aria-hidden])")
+            ? Array.from(inner.querySelectorAll(".layout-card:not([aria-hidden])"))
             : [];
-          return {
-            element: col,
-            inner: inner,
-            cards: cards,
-            groupHeight: 0,
-          };
+          // Enable GPU layer for smooth transforms
+          if (inner) inner.style.willChange = "transform";
+          return { element: col, inner, cards, groupHeight: 0 };
         });
 
-        const measureColumns = () => {
+        let heroScrollLimit = 0;
+        let targetScroll = 0;
+        let currentScroll = 0;
+        let animating = false;
+        const LERP = 0.08;
+        const SCROLL_SPEED = 0.5;
+
+        const measure = () => {
           colStates.forEach((state) => {
             if (!state.inner) return;
             let h = 0;
@@ -247,69 +253,117 @@ const subProjects = projects.filter((p) => p !== heroProject);
             h += gap * state.cards.length;
             state.groupHeight = h;
           });
-        };
-
-        const measureHeroLimit = () => {
-          if (!heroContainer) return 0;
-          const rect = heroContainer.getBoundingClientRect();
-          return rect.height + 32;
-        };
-
-        const setInitialPositions = () => {
-          measureColumns();
-          colStates.forEach((state) => {
-            if (state.groupHeight > 0) {
-              state.element.scrollTop = 0;
-            }
-          });
-        };
-
-        const syncScroll = () => {
-          const currentScrollTop = container.scrollTop;
-          const heroScrollLimit = measureHeroLimit();
-          const firstCol = colStates[0];
-
-          colStates.forEach((state) => {
-            if (state.groupHeight === 0) return;
-
-            if (currentScrollTop < heroScrollLimit) {
-              state.element.scrollTop = 0;
-            } else {
-              const activeScroll = currentScrollTop - heroScrollLimit;
-              const newScrollTop = activeScroll % state.groupHeight;
-              state.element.scrollTop = newScrollTop;
-            }
-          });
-
-          if (currentScrollTop > 8000 && firstCol && firstCol.groupHeight > 0) {
-            const loopOffset =
-              Math.floor((8000 - heroScrollLimit) / firstCol.groupHeight) *
-              firstCol.groupHeight;
-            container.scrollTop = currentScrollTop - loopOffset;
+          if (heroContainer) {
+            heroScrollLimit = heroContainer.offsetHeight + 32;
           }
         };
 
-        setInitialPositions();
-        container.scrollTop = 0;
+        /* Use translateY instead of scrollTop — runs on GPU, no layout thrash */
+        const syncColumns = (scrollY) => {
+          colStates.forEach((state) => {
+            if (!state.inner || state.groupHeight <= 0) return;
+            let offset = 0;
+            if (scrollY >= heroScrollLimit) {
+              offset = -((scrollY - heroScrollLimit) % state.groupHeight);
+            }
+            state.inner.style.transform = "translateY(" + offset + "px)";
+          });
+        };
+
+        const animate = () => {
+          currentScroll += (targetScroll - currentScroll) * LERP;
+
+          if (Math.abs(targetScroll - currentScroll) < 0.5) {
+            currentScroll = targetScroll;
+          }
+
+          const maxScroll = container.scrollHeight - container.clientHeight;
+          currentScroll = Math.max(0, Math.min(currentScroll, maxScroll));
+
+          container.scrollTop = currentScroll;
+          syncColumns(currentScroll);
+
+          // Reset to avoid 10,000px limit
+          const first = colStates[0];
+          if (first && first.groupHeight > 0 && currentScroll > 6000) {
+            const remainder = (currentScroll - heroScrollLimit) % first.groupHeight;
+            const resetTo = heroScrollLimit + remainder;
+            if (currentScroll - resetTo > first.groupHeight) {
+              currentScroll = resetTo;
+              targetScroll = resetTo;
+              container.scrollTop = resetTo;
+            }
+          }
+
+          if (Math.abs(targetScroll - currentScroll) > 0.5) {
+            requestAnimationFrame(animate);
+          } else {
+            animating = false;
+          }
+        };
+
+        const startAnimation = () => {
+          if (!animating) {
+            animating = true;
+            requestAnimationFrame(animate);
+          }
+        };
 
         document.addEventListener(
           "wheel",
           (e) => {
-            if (window.innerWidth > 900) {
-              container.scrollTop += e.deltaY;
+            if (window.innerWidth <= 900) return;
+            e.preventDefault();
+            targetScroll += e.deltaY * SCROLL_SPEED;
+            const maxScroll = container.scrollHeight - container.clientHeight;
+            targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+            startAnimation();
+          },
+          { passive: false },
+        );
+
+        container.addEventListener(
+          "scroll",
+          () => {
+            if (!animating) {
+              currentScroll = container.scrollTop;
+              targetScroll = currentScroll;
+              syncColumns(currentScroll);
             }
           },
           { passive: true },
         );
 
-        container.addEventListener("scroll", syncScroll, { passive: true });
-        window.addEventListener("load", () => {
-          setInitialPositions();
+        const init = () => {
+          measure();
+          container.scrollTop = 0;
+          currentScroll = 0;
+          targetScroll = 0;
+        };
+
+        const images = container.querySelectorAll("img");
+        let loaded = 0;
+        const onImgLoad = () => {
+          loaded++;
+          if (loaded >= images.length) measure();
+        };
+        images.forEach((img) => {
+          if (img.complete) {
+            loaded++;
+          } else {
+            img.addEventListener("load", onImgLoad);
+            img.addEventListener("error", onImgLoad);
+          }
         });
-        window.addEventListener("resize", () => {
-          measureColumns();
-        });
-      }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init);
+        } else {
+          init();
+        }
+        window.addEventListener("load", measure);
+        window.addEventListener("resize", measure);
+      })();
     </script>
   </body>
 </html>

@@ -294,7 +294,9 @@ const loopedDigitalMediaFolders = Array(5).fill(digitalMediaFolders).flat();
           }
         };
 
-        // Scroll listeners on both viewports track last used scroll & update card sizes/z-index
+        // Native scroll listeners — just like the home page.
+        // The browser handles all scroll physics (momentum, easing, snap).
+        // JS only updates card perspective transforms.
         columnViewport.addEventListener(
           "scroll",
           () => {
@@ -344,29 +346,45 @@ const loopedDigitalMediaFolders = Array(5).fill(digitalMediaFolders).flat();
           { passive: true },
         );
 
-        // Wheel event listener: updates active scroll axis based on target or delta and scrolls active axis
+        // Wheel: route scroll to correct viewport based on gesture direction.
+        // When the active (top z-index) viewport can't scroll in the wheel direction,
+        // redirect the delta to the other viewport.
         window.addEventListener(
           "wheel",
           (e) => {
-            if (columnViewport.contains(e.target)) {
-              setContainerZIndex("column");
-            } else if (rowViewport.contains(e.target)) {
-              setContainerZIndex("row");
-            } else if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-              setContainerZIndex("column");
-            } else if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-              setContainerZIndex("row");
-            }
+            const absDx = Math.abs(e.deltaX);
+            const absDy = Math.abs(e.deltaY);
 
-            const delta = (e.deltaY || e.deltaX) * 0.4;
-            if (activeAxis === "column") {
-              columnViewport.scrollTop += delta;
-              checkColumnLoop();
-            } else {
-              rowViewport.scrollLeft += delta;
+            // Determine intended axis from wheel gesture
+            if (absDx > absDy + 2) {
+              // Clearly horizontal gesture (trackpad swipe left/right)
+              if (activeAxis !== "row") {
+                setContainerZIndex("row");
+                requestCardsUpdate();
+              }
+              rowViewport.scrollLeft += e.deltaX;
               checkRowLoop();
+              requestCardsUpdate();
+            } else if (absDy > absDx + 2) {
+              // Clearly vertical gesture (mouse wheel or trackpad swipe up/down)
+              if (activeAxis !== "column") {
+                setContainerZIndex("column");
+                requestCardsUpdate();
+              }
+              columnViewport.scrollTop += e.deltaY;
+              checkColumnLoop();
+              requestCardsUpdate();
+            } else {
+              // Ambiguous — scroll the currently active axis
+              if (activeAxis === "column") {
+                columnViewport.scrollTop += e.deltaY || e.deltaX;
+                checkColumnLoop();
+              } else {
+                rowViewport.scrollLeft += e.deltaX || e.deltaY;
+                checkRowLoop();
+              }
+              requestCardsUpdate();
             }
-            requestCardsUpdate();
           },
           { passive: true },
         );
@@ -409,4 +427,3 @@ const loopedDigitalMediaFolders = Array(5).fill(digitalMediaFolders).flat();
     </script>
   </body>
 </html>
-
